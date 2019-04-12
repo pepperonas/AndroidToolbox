@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.TrafficStats;
-import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -53,15 +52,6 @@ public class MainService extends Service {
     private long mTmpLastRxMobile;
     private long mTmpLastTxMobile;
     //    private RemoteViews mRemoteViews;
-
-    public class MyBinder extends Binder {
-        public MainService getService() {
-            return MainService.this;
-        }
-    }
-
-    public MainService() {
-    }
 
     @Override
     public IBinder onBind(Intent intent) {

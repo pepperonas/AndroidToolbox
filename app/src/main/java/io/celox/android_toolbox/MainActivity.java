@@ -16,26 +16,11 @@
 
 package io.celox.android_toolbox;
 
-import android.content.ComponentName;
 import android.content.Intent;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.support.v7.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
-
-    private MainService mMainService;
-
-    private ServiceConnection mServiceConnection = new ServiceConnection() {
-        public void onServiceConnected(ComponentName className, IBinder service) {
-            mMainService = ((MainService.MyBinder) service).getService();
-        }
-
-        public void onServiceDisconnected(ComponentName className) {
-            mMainService = null;
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +29,6 @@ public class MainActivity extends AppCompatActivity {
 
         Intent intent = new Intent(this, MainService.class);
         startService(intent);
-
-        //        Intent intent = new Intent(this,  MainService.class);
-        //        bindService(intent, m_serviceConnection, BIND_AUTO_CREATE);
     }
 
 }
