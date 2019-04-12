@@ -73,12 +73,12 @@ public class MainService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         String channelId = getString(R.string.channel_id_network_notification);
         String channelName = getString(R.string.channel_name_network_notification);
-        NotificationChannel chan = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE);
-        chan.setLightColor(Color.BLUE);
-        chan.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE);
+        notificationChannel.setLightColor(Color.BLUE);
+        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         assert mNotificationManager != null;
-        mNotificationManager.createNotificationChannel(chan);
+        mNotificationManager.createNotificationChannel(notificationChannel);
 
         mNotificationBuilder = new NotificationCompat.Builder(this, channelId);
         Notification notification = mNotificationBuilder.setOngoing(true)
@@ -142,8 +142,6 @@ public class MainService extends Service {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        //                mNotificationBuilder.setSmallIcon(R.drawable.ic_launcher_background);
 
         final Date date = new Date(System.currentTimeMillis());
         final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
