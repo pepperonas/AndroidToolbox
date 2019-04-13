@@ -20,6 +20,8 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -31,6 +33,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.jbasx.base.Si;
 
 import java.text.SimpleDateFormat;
@@ -39,11 +42,14 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.celox.android_toolbox.utils.Database;
+
 public class MainService extends Service {
 
     private static final String TAG = "MainService";
 
     private static final int NOTIFICATION_ID = 1;
+
     private NotificationCompat.Builder mNotificationBuilder;
     private NotificationManager mNotificationManager;
 
@@ -51,37 +57,41 @@ public class MainService extends Service {
     private long mTmpLastTx;
     private long mTmpLastRxMobile;
     private long mTmpLastTxMobile;
-    //    private RemoteViews mRemoteViews;
+
+    private String mClipboardText = "";
+    private Database mDb;
 
     @Override
     public IBinder onBind(Intent intent) {
-        // TODO: Return the communication channel to the service.
-        throw new UnsupportedOperationException("Not yet implemented");
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mDb = new Database(this);
+
         String channelId = getString(R.string.channel_id_network_notification);
         String channelName = getString(R.string.channel_name_network_notification);
-        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_NONE);
+        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName,
+                NotificationManager.IMPORTANCE_NONE);
         notificationChannel.setLightColor(Color.BLUE);
         notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        assert mNotificationManager != null;
         mNotificationManager.createNotificationChannel(notificationChannel);
 
+        ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+        if (clipboardManager != null) {
+            clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
+        }
+
         mNotificationBuilder = new NotificationCompat.Builder(this, channelId);
-        Notification notification = mNotificationBuilder.setOngoing(true)
-                .setSmallIcon(R.drawable.ic_launcher_background)
+        Notification notification = mNotificationBuilder
+                .setOngoing(true)
+                .setSmallIcon(R.drawable.kbytes_0)
                 .setContentTitle(getString(R.string.network_notification_content_title))
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
-
-        //        mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_network);
-        //        mRemoteViews.setImageViewResource(R.id.image, R.drawable.ic_launcher);
-        //        mRemoteViews.setTextViewText(R.id.title, getString(R.string.network_notification_title));
-        //        mNotificationBuilder.setContent(mRemoteViews);
 
         startForeground(NOTIFICATION_ID, notification);
 
@@ -89,7 +99,7 @@ public class MainService extends Service {
         TimerTask task = new TimerTask() {
             @Override
             public void run() {
-                updateUi();
+                updateNotification();
             }
         };
         timer.scheduleAtFixedRate(task, 0, 1000);
@@ -97,19 +107,23 @@ public class MainService extends Service {
         return START_STICKY;
     }
 
-    public void updateUi() {
-        long rx_ivl = (long) ((TrafficStats.getTotalRxBytes() - mTmpLastRx) / (float) Const.NETWORK_UPDATE_INTERVAL_SEC);
-        long tx_ivl = (long) ((TrafficStats.getTotalTxBytes() - mTmpLastTx) / (float) Const.NETWORK_UPDATE_INTERVAL_SEC);
-        long rxm_ivl = (long) ((TrafficStats.getMobileRxBytes() - mTmpLastRxMobile) / (float) Const.NETWORK_UPDATE_INTERVAL_SEC);
-        long txm_ivl = (long) ((TrafficStats.getMobileTxBytes() - mTmpLastTxMobile) / (float) Const.NETWORK_UPDATE_INTERVAL_SEC);
+    public void updateNotification() {
+        long rx_ivl = (long) ((TrafficStats.getTotalRxBytes() - mTmpLastRx)
+                / (float) Const.NETWORK_UPDATE_INTERVAL_SEC);
+        long tx_ivl = (long) ((TrafficStats.getTotalTxBytes() - mTmpLastTx)
+                / (float) Const.NETWORK_UPDATE_INTERVAL_SEC);
+        long rxm_ivl = (long) ((TrafficStats.getMobileRxBytes() - mTmpLastRxMobile)
+                / (float) Const.NETWORK_UPDATE_INTERVAL_SEC);
+        long txm_ivl = (long) ((TrafficStats.getMobileTxBytes() - mTmpLastTxMobile)
+                / (float) Const.NETWORK_UPDATE_INTERVAL_SEC);
 
         mTmpLastRx = TrafficStats.getTotalRxBytes();
         mTmpLastTx = TrafficStats.getTotalTxBytes();
         mTmpLastRxMobile = TrafficStats.getMobileRxBytes();
         mTmpLastTxMobile = TrafficStats.getMobileTxBytes();
 
-        final String down = "Down: " + (rx_ivl / 1024) + " kB";
-        final String up = "Up: " + (tx_ivl / 1024) + " kB";
+        final String down = getString(R.string.down_) + (rx_ivl / 1024) + " " + getString(R.string._unit_megabytes_per_second);
+        final String up = getString(R.string.up_) + (tx_ivl / 1024) + " " + getString(R.string._unit_megabytes_per_second);
 
         final long totalTraffic = (rx_ivl + tx_ivl);
 
@@ -117,7 +131,8 @@ public class MainService extends Service {
         if (totalTraffic > Si.MEGA) {
             float f = totalTraffic / (float) Si.MEGA;
             String fStr = String.valueOf(f);
-            imageResourceId = resolveDrawableId("mbytes__" + fStr.split("\\.")[0] + "_" + fStr.split("\\.")[1].charAt(0));
+            imageResourceId = resolveDrawableId("mbytes__" +
+                    fStr.split("\\.")[0] + "_" + fStr.split("\\.")[1].charAt(0));
         } else if (totalTraffic != 0) {
             imageResourceId = resolveDrawableId("kbytes_" + totalTraffic / (int) Si.KILO);
         } else {
@@ -126,7 +141,6 @@ public class MainService extends Service {
 
         try {
             if (imageResourceId == 0) {
-                Log.e(TAG, "update: imageResourceId invalid.");
                 imageResourceId = resolveDrawableId("kbytes_" + 0);
             }
         } catch (Exception e) {
@@ -141,8 +155,7 @@ public class MainService extends Service {
             public void run() {
                 mNotificationBuilder.setSmallIcon(finalImageResourceId);
                 mNotificationBuilder.setContentTitle(down + "  |  " + up);
-                mNotificationBuilder.setContentText(sdf.format(date));
-                //                mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, String.valueOf(totalTraffic / 1024));
+                mNotificationBuilder.setContentText(sdf.format(date) + " Clip: " + mClipboardText);
                 mNotificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
             }
         }, 1000);
@@ -156,5 +169,37 @@ public class MainService extends Service {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    class ClipboardListener implements ClipboardManager.OnPrimaryClipChangedListener {
+
+        private static final long DELTA_TIME_MS = 1000;
+
+        private long mLastAddedClip = 0;
+
+        public void onPrimaryClipChanged() {
+            if (!AesPrefs.getBooleanRes(R.string.CLIPBOARD_ENABLED, true)) {
+                return;
+            }
+            try {
+                ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                ClipData cd = null;
+                if (clipboardManager != null) {
+                    cd = clipboardManager.getPrimaryClip();
+                }
+                ClipData.Item item;
+                if (cd != null) {
+                    item = cd.getItemAt(0);
+                    mClipboardText = item.getText().toString();
+                    Log.d(TAG, "onPrimaryClipChanged " + mClipboardText);
+                    if ((System.currentTimeMillis() - mLastAddedClip) > DELTA_TIME_MS) {
+                        mLastAddedClip = System.currentTimeMillis();
+                        mDb.insertClipboardText(mClipboardText);
+                    }
+                }
+            } catch (Exception e) {
+                Log.d(TAG, "onPrimaryClipChanged Error while getting clip-data");
+            }
+        }
     }
 }
