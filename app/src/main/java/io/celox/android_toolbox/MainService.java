@@ -130,7 +130,7 @@ public class MainService extends Service {
         String unitRx = getString(R.string._unit_kilobytes_per_second);
         String unitTx = getString(R.string._unit_kilobytes_per_second);
 
-        DecimalFormat df = new DecimalFormat("#,##");
+        DecimalFormat df = new DecimalFormat("#.##");
 
         if (rx_ivl > Si.MEGA) {
             unitRx = getString(R.string._unit_megabytes_per_second);
