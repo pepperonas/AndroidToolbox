@@ -134,7 +134,7 @@ public class MainService extends Service {
 
         if (rx_ivl > Si.MEGA) {
             unitRx = getString(R.string._unit_megabytes_per_second);
-            fRx = rx_ivl / (float) Si.MEGA;
+            fRx = (float) rx_ivl / (float) Si.MEGA;
             sRx = df.format(fRx);
         } else {
             sRx = String.valueOf((rx_ivl / 1024));
@@ -142,7 +142,7 @@ public class MainService extends Service {
 
         if (tx_ivl > Si.MEGA) {
             unitTx = getString(R.string._unit_megabytes_per_second);
-            fTx = tx_ivl / (float) Si.MEGA;
+            fTx = (float) tx_ivl / (float) Si.MEGA;
             sTx = df.format(fTx);
         } else {
             sTx = String.valueOf((tx_ivl / 1024));
