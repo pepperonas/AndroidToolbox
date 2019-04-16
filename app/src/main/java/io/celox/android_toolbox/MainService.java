@@ -36,6 +36,7 @@ import android.util.Log;
 import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.jbasx.base.Si;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -122,8 +123,33 @@ public class MainService extends Service {
         mTmpLastRxMobile = TrafficStats.getMobileRxBytes();
         mTmpLastTxMobile = TrafficStats.getMobileTxBytes();
 
-        final String down = getString(R.string.down_) + (rx_ivl / 1024) + " " + getString(R.string._unit_megabytes_per_second);
-        final String up = getString(R.string.up_) + (tx_ivl / 1024) + " " + getString(R.string._unit_megabytes_per_second);
+        String sRx;
+        String sTx;
+        float fRx;
+        float fTx;
+        String unitRx = getString(R.string._unit_kilobytes_per_second);
+        String unitTx = getString(R.string._unit_kilobytes_per_second);
+
+        DecimalFormat df = new DecimalFormat("#,##");
+
+        if (rx_ivl > Si.MEGA) {
+            unitRx = getString(R.string._unit_megabytes_per_second);
+            fRx = rx_ivl / (float) Si.MEGA;
+            sRx = df.format(fRx);
+        } else {
+            sRx = String.valueOf((rx_ivl / 1024));
+        }
+
+        if (tx_ivl > Si.MEGA) {
+            unitTx = getString(R.string._unit_megabytes_per_second);
+            fTx = tx_ivl / (float) Si.MEGA;
+            sTx = df.format(fTx);
+        } else {
+            sTx = String.valueOf((tx_ivl / 1024));
+        }
+
+        final String down = getString(R.string.down) + " " + sRx + " " + unitRx;
+        final String up = getString(R.string.up) + " " + sTx + " " + unitTx;
 
         final long totalTraffic = (rx_ivl + tx_ivl);
 

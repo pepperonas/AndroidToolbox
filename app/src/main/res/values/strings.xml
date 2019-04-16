@@ -27,7 +27,7 @@
     <string name="channel_name_network_notification">Network</string>
     <string name="network_notification_title">Traffic</string>
     <string name="network_notification_content_title">App is running in background</string>
-    <string name="down_">Down: </string>
-    <string name="up_">Up: </string>
+    <string name="down">Down:</string>
+    <string name="up">Up:</string>
 
 </resources>
