@@ -14,10 +14,15 @@
  * limitations under the License.
  */
 
-package io.celox.android_toolbox;
+package io.celox.android_toolbox.utils;
 
 /**
  * @author Martin Pfeffer
  * <a href="mailto:martin.pfeffer@celox.io">martin.pfeffer@celox.io</a>
  * @see <a href="https://celox.io">https://celox.io</a>
  */
+public class Const {
+
+    public static final int NETWORK_UPDATE_INTERVAL_SEC = 1;
+
+}

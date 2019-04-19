@@ -43,6 +43,7 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.celox.android_toolbox.utils.Const;
 import io.celox.android_toolbox.utils.Database;
 
 public class MainService extends Service {
@@ -204,6 +205,10 @@ public class MainService extends Service {
         private long mLastAddedClip = 0;
 
         public void onPrimaryClipChanged() {
+            //            SharedPreferences preferences = getSharedPreferences(
+            //                    Const.PREF_FILE_NAME, Context.MODE_PRIVATE);
+            //            boolean clipboardEnabled = preferences.getBoolean(
+            //                    Const.P_CLIPBOARD_ENABLED, true);
             if (!AesPrefs.getBooleanRes(R.string.CLIPBOARD_ENABLED, true)) {
                 return;
             }

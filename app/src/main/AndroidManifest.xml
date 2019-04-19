@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019 Martin Pfeffer
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,20 +18,18 @@
     package="io.celox.android_toolbox">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name=".App"
         android:allowBackup="true"
+        android:fullBackupContent="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:launchMode="singleTop"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <service
-            android:name=".MainService"
-            android:enabled="true"
-            android:exported="true"></service>
 
         <activity android:name=".MainActivity">
             <intent-filter>
@@ -40,7 +37,32 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <intent-filter android:label="celox.io - AndroidToolbox">
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="https://celox.io"
+                    android:pathPrefix="/"
+                    android:scheme="https" />
+                <data
+                    android:host="celox"
+                    android:scheme="android-toolbox" />
+            </intent-filter>
         </activity>
+        <service
+            android:name=".MainService"
+            android:enabled="true"
+            android:exported="true" />
+        <receiver
+            android:name=".utils.BootReceiver"
+            android:label="@string/empty">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

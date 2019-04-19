@@ -29,5 +29,6 @@
     <string name="network_notification_content_title">App is running in background</string>
     <string name="down">Down:</string>
     <string name="up">Up:</string>
+    <string name="android_toolbox">AndroidToolbox</string>
 
 </resources>
