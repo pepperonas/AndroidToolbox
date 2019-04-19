@@ -62,6 +62,7 @@ public class MainService extends Service {
 
     private String mClipboardText = "";
     private Database mDb;
+    private Handler mHandler = new Handler();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -97,6 +98,18 @@ public class MainService extends Service {
 
         startForeground(NOTIFICATION_ID, notification);
 
+        launchRunnable();
+
+        //        launchTimerTask();
+
+        return START_STICKY;
+    }
+
+    private void launchRunnable() {
+        mHandler.post(mRunnable);
+    }
+
+    private void launchTimerTask() {
         Timer timer = new Timer();
         TimerTask task = new TimerTask() {
             @Override
@@ -105,9 +118,16 @@ public class MainService extends Service {
             }
         };
         timer.scheduleAtFixedRate(task, 0, 1000);
-
-        return START_STICKY;
     }
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            updateNotification();
+
+            mHandler.postDelayed(mRunnable, 1000);
+        }
+    };
 
     public void updateNotification() {
         long rx_ivl = (long) ((TrafficStats.getTotalRxBytes() - mTmpLastRx)
