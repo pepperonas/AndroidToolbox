@@ -18,6 +18,8 @@ package io.celox.android_toolbox;
 
 import android.app.Application;
 
+import com.pepperonas.aespreferences.AesPrefs;
+
 /**
  * @author Martin Pfeffer
  * <a href="mailto:martin.pfeffer@celox.io">martin.pfeffer@celox.io</a>
@@ -29,6 +31,6 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
-        //        AesPrefs.init(this, "aes_config", "fSXwTkTKEH299YBcMKa6UeW", AesPrefs.LogMode.NONE);
+        AesPrefs.init(this, "aes_config", "fSXwTkTKEH299YBcMKa6UeW", AesPrefs.LogMode.NONE);
     }
 }
