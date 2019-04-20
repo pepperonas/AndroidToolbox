@@ -19,6 +19,7 @@ package io.celox.android_toolbox.utils;
 import android.app.Application;
 
 import com.pepperonas.aespreferences.AesPrefs;
+import com.pepperonas.andbasx.AndBasx;
 
 /**
  * @author Martin Pfeffer
@@ -31,6 +32,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
 
+        AndBasx.init(this);
         AesPrefs.init(this, "aes_config", "fSXwTkTKEH299YBcMKa6UeW", AesPrefs.LogMode.NONE);
     }
 }

@@ -193,5 +193,42 @@ public class Database extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_CLIPBOARD + ";");
     }
+
+    public void encryptClipboard(String s) {
+        List<ClipDataAdvanced> data = getClipData(Integer.MAX_VALUE);
+        for (ClipDataAdvanced cda : data) {
+            encryptClipDataEntry(cda, s);
+        }
+    }
+
+    public void decryptClipboard(String s) {
+        List<ClipDataAdvanced> data = getClipData(Integer.MAX_VALUE);
+        for (ClipDataAdvanced cda : data) {
+            decryptClipDataEntry(cda, s);
+        }
+    }
+
+    private void encryptClipDataEntry(ClipDataAdvanced clipDataAdvanced, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        long iv = System.currentTimeMillis();
+        String encrypted = Crypt.encrypt(password, clipDataAdvanced.getContent(), iv);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TBL_CB_CONTENT, encrypted);
+        contentValues.put(TBL_CB_IV, iv);
+        db.update(TBL_CB_CONTENT, contentValues, CREATED + " = " + clipDataAdvanced.getTimestamp(), null);
+    }
+
+    private void decryptClipDataEntry(ClipDataAdvanced clipDataAdvanced, String password) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String decrypted = Crypt.decrypt(password, clipDataAdvanced.getContent(), clipDataAdvanced.getIv());
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TBL_CB_CONTENT, decrypted);
+        contentValues.put(TBL_CB_IV, clipDataAdvanced.getIv());
+        try {
+            db.update(TBL_CB_CONTENT, contentValues, TBL_CB_IV + "= " + clipDataAdvanced.getTimestamp(), null);
+        } catch (Exception e) {
+            Log.e(TAG, "decryptClipDataEntry: ", e);
+        }
+    }
 }
 

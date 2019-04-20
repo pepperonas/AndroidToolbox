@@ -19,9 +19,6 @@ package io.celox.android_toolbox;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
 import android.view.TouchDelegate;
@@ -31,6 +28,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.mikepenz.community_material_typeface_library.CommunityMaterial;
 import com.mikepenz.iconics.IconicsDrawable;
@@ -132,7 +133,6 @@ public class ClipboardDialogActivity extends AppCompatActivity {
                     onUpdateTvHeader();
 
                     if (mClips.size() == 0) {
-
                         Drawable d = new IconicsDrawable(ClipboardDialogActivity.this, CommunityMaterial.Icon.cmd_check)
                                 .colorRes(R.color.sa_teal).sizeDp(64);
                         mIvEasterEgg.setVisibility(View.VISIBLE);

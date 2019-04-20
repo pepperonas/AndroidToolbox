@@ -19,6 +19,7 @@ package io.celox.android_toolbox;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -112,6 +113,11 @@ public class MainService extends Service {
                 .setShowWhen(false)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
+
+        Intent notificationIntent = new Intent(this, ClipboardDialogActivity.class);
+        notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        mNotificationBuilder.setContentIntent(pendingIntent);
 
         startForeground(NOTIFICATION_ID, notification);
 
