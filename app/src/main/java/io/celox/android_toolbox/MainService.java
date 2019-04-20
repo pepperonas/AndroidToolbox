@@ -30,9 +30,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.support.annotation.NonNull;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
+import androidx.core.app.NotificationCompat;
 
 import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.jbasx.base.Si;
@@ -108,14 +109,13 @@ public class MainService extends Service {
                 .setSmallIcon(R.drawable.kbytes_0)
                 .setContentTitle(getString(R.string.network_notification_content_title))
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setShowWhen(false)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
 
         startForeground(NOTIFICATION_ID, notification);
 
         mHandler.post(mRunnable);
-
-        //        registerReceiver();
 
         return START_STICKY;
     }
@@ -198,7 +198,7 @@ public class MainService extends Service {
             public void run() {
                 mNotificationBuilder.setSmallIcon(finalImageResourceId);
                 mNotificationBuilder.setContentTitle(down + "  |  " + up);
-                mNotificationBuilder.setContentText(sdf.format(date) + " Clip: " + mClipboardContent);
+                mNotificationBuilder.setContentText(sdf.format(date) + " Clips: " + mDb.getClipDataCount());
                 mNotificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
             }
         }, 1000);

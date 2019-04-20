@@ -21,14 +21,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.graphics.Rect;
 import android.os.SystemClock;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -66,7 +67,7 @@ public class SwipeableRecyclerViewTouchListener implements RecyclerView.OnItemTo
     private float mFinalDelta;
 
     /**
-     * Constructs a new swipe touch listener for the given {@link android.support.v7.widget.RecyclerView}
+     * Constructs a new swipe touch listener for the given {@link RecyclerView}
      *
      * @param recyclerView The recycler view whose items should be dismissable by swiping.
      * @param listener     The listener for the swipe events.
@@ -345,7 +346,7 @@ public class SwipeableRecyclerViewTouchListener implements RecyclerView.OnItemTo
         /**
          * Called when the item has been dismissed by swiping to the left.
          *
-         * @param recyclerView           The originating {@link android.support.v7.widget.RecyclerView}.
+         * @param recyclerView           The originating {@link RecyclerView}.
          * @param reverseSortedPositions An array of positions to dismiss, sorted in descending
          *                               order for convenience.
          */
@@ -354,7 +355,7 @@ public class SwipeableRecyclerViewTouchListener implements RecyclerView.OnItemTo
         /**
          * Called when the item has been dismissed by swiping to the right.
          *
-         * @param recyclerView           The originating {@link android.support.v7.widget.RecyclerView}.
+         * @param recyclerView           The originating {@link RecyclerView}.
          * @param reverseSortedPositions An array of positions to dismiss, sorted in descending
          *                               order for convenience.
          */

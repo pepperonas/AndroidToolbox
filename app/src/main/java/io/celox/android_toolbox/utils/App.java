@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.celox.android_toolbox;
+package io.celox.android_toolbox.utils;
 
 import android.app.Application;
 

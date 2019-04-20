@@ -16,7 +16,7 @@
 
 package io.celox.android_toolbox.custom;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
 /**
  * @author Martin Pfeffer (celox.io)
