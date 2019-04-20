@@ -26,7 +26,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0-alpha10'
+        classpath 'com.android.tools.build:gradle:3.5.0-alpha12'
     }
 }
 
@@ -36,20 +36,51 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 
+static def getDate() {
+    def date = new Date()
+    def dayOnly = true
+    def formattedDate = date.format(dayOnly ? '_yyyy-MM-dd' : '_yyyy-MM-dd-hh-mm')
+    return formattedDate
+}
+
+static def formatVersionCode(int versionCode) {
+    String res = String.valueOf(versionCode)
+    switch (res.length()) {
+        case 1:
+            return "0.0." + res
+        case 2:
+            return ("0." + res.charAt(0) + ".") + res.charAt(1)
+        case 3:
+            return "" + res.charAt(0) + ((".") + res.charAt(1)) + (".") + res.charAt(2)
+    }
+    return "-1"
+}
+
+def version_code = 5
+def version_name = formatVersionCode(version_code)
+//def version_name = "0.0.5"
+
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "io.celox.myapplication"
-        minSdkVersion 28
+        applicationId "io.celox.androidtoolbox"
+        minSdkVersion 24
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode version_code
+        versionName version_name
+        multiDexEnabled true
+        setProperty("archivesBaseName", "android-toolbox-$versionName")
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            minifyEnabled true
+            buildConfigField "long", "APP_CREATED", "1500000000000" + "L"
+        }
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField "long", "APP_CREATED", System.currentTimeMillis() + "L"
         }
     }
 }
@@ -57,13 +88,25 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:28.0.0'
+    implementation 'com.android.support:recyclerview-v7:28.0.0'
+    implementation 'com.android.support:cardview-v7:28.0.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+    implementation 'org.jetbrains:annotations-java5:15.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-
+    // utils
     implementation 'com.github.pepperonas:andbasx:0.3.0'
     implementation 'com.github.pepperonas:materialdialog:0.3.4'
     implementation 'com.github.pepperonas:aespreferences:0.0.6'
-    implementation 'org.jetbrains:annotations-java5:15.0'
+    // icons
+    implementation 'com.mikepenz:iconics-core:3.0.2@aar'
+    implementation 'com.mikepenz:google-material-typeface:3.0.1.0.original@aar'
+    implementation 'com.mikepenz:material-design-iconic-typeface:2.2.0.2@aar'
+    implementation 'com.mikepenz:community-material-typeface:2.0.46.1@aar'
+    // graph-view
+    implementation 'com.jjoe64:graphview:4.2.1'
+    // preference fragment
+    implementation 'com.github.machinarius:preferencefragment:0.1.1'
+
 }

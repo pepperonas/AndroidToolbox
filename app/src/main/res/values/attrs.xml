@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019 Martin Pfeffer
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,9 +15,13 @@
   -->
 
 <resources>
-    <string name="AUTOSTART_ENABLED">AUTOSTART_ENABLED</string>
-    <string name="CLIPBOARD_ENABLED">CLIPBOARD_ENABLED</string>
-    <string name="ENCRYPTION_PASSWORD">ENCRYPTION_PASSWORD</string>
-    <string name="MAX_CLIPS_IN_RECYCLER" translatable="false">MAX_CLIPS_IN_RECYCLER</string>
-    <string name="LAST_PROGRESS_LOCK_TIME">LAST_PROGRESS_LOCK_TIME</string>
+    <attr name="td_primary_color" format="reference" />
+    <attr name="td_primary_color_darker" format="reference" />
+    <attr name="td_accent_color" format="reference" />
+    <attr name="td_accent_color_darker" format="reference" />
+    <attr name="td_nav_drawer_header" format="reference" />
+    <attr name="td_fab_menu_normal" format="reference" />
+    <attr name="td_fab_menu_pressed" format="reference" />
+    <attr name="td_fab_normal" format="reference" />
+    <attr name="td_nav_drawer_bg" format="reference" />
 </resources>

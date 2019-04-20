@@ -30,5 +30,22 @@
     <string name="down">Down:</string>
     <string name="up">Up:</string>
     <string name="android_toolbox">AndroidToolbox</string>
+    <string name="LOGOUT_TIME">LOGOUT_TIME</string>
+    <string name="no_clip_data_set">The clipboard is empty</string>
+
+    <string name="dialog_enter_password_title">Password required</string>
+    <string name="dialog_enter_password_msg">Enter your password to access the database.</string>
+    <string name="dialog_enter_password_to_decrypt_msg">Enter your password to decrypt the database.</string>
+    <string name="remember_for">Remember for</string>
+    <string name="wrong_password">Wrong password</string>
+    <string name="invalid_input">Invalid input</string>
+    <string name="clipboard_locked">Clipboard locked</string>
+    <string name="copied_to_clipboard">Copied to clipboard</string>
+    <string name="encrypted_text_cant_be_copied">Encrypted content can\'t be copied</string>
+    <string name="dialog_clipboard_header">Clipboard</string>
+    <string name="no_entries">Empty</string>
+    <string name="one_entry">1 entry</string>
+    <string name="entries">entries</string>
+    <string name="settings">Settings</string>
 
 </resources>

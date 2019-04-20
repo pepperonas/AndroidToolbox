@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019 Martin Pfeffer
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,4 +17,42 @@
 <resources>
     <dimen name="notification_circle_size">40dp</dimen>
     <dimen name="_8sp">8sp</dimen>
+
+    <!--CARD-->
+    <dimen name="header_margin_top">32dp</dimen>
+    <dimen name="card_container_margin_top">32dp</dimen>
+    <dimen name="card_container_margin_top_smaller">16dp</dimen>
+    <dimen name="card_container_margin_bottom">16dp</dimen>
+
+    <dimen name="card_to_card_margin_top">0dp</dimen>
+    <dimen name="card_to_card_margin_bottom_battery">8dp</dimen>
+
+
+    <dimen name="card_to_card_margin_bottom_network">8dp</dimen>
+    <dimen name="card_clip_data_margin_top">8dp</dimen>
+    <dimen name="action_card_large_height">124dp</dimen>
+
+    <dimen name="card_corner_radius_default">2dp</dimen>
+
+    <dimen name="card_height_clip_data">72dp</dimen>
+    <dimen name="card_corner_radius_battery">2dp</dimen>
+
+    <dimen name="card_corner_radius_clip_data">4dp</dimen>
+    <dimen name="card_text_padding">4dp</dimen>
+    <dimen name="default_padding">16dp</dimen>
+
+    <dimen name="card_clip_data_margin_left">4dp</dimen>
+    <dimen name="card_clip_data_margin_right">4dp</dimen>
+
+    <!--content of clip-->
+    <dimen name="text_card_clip_data_content_padding_left">0dp</dimen>
+    <dimen name="text_card_clip_data_content_padding_right">4dp</dimen>
+    <dimen name="text_card_clip_data_content_padding_top">4dp</dimen>
+    <dimen name="text_card_clip_data_content_padding_bottom">4dp</dimen>
+
+    <!--time format of clip-->
+    <dimen name="text_card_clip_data_created_padding_left">4dp</dimen>
+    <dimen name="text_card_clip_data_created_padding_right">8dp</dimen>
+    <dimen name="text_card_clip_data_created_padding_top">2dp</dimen>
+    <dimen name="text_card_clip_data_created_padding_bottom">2dp</dimen>
 </resources>

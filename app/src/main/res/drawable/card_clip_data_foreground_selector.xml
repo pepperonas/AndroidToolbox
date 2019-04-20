@@ -1,4 +1,4 @@
-<!--
+<?xml version="1.0" encoding="utf-8"?><!--
   ~ Copyright (c) 2019 Martin Pfeffer
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,10 +14,15 @@
   ~ limitations under the License.
   -->
 
-<resources>
-    <string name="AUTOSTART_ENABLED">AUTOSTART_ENABLED</string>
-    <string name="CLIPBOARD_ENABLED">CLIPBOARD_ENABLED</string>
-    <string name="ENCRYPTION_PASSWORD">ENCRYPTION_PASSWORD</string>
-    <string name="MAX_CLIPS_IN_RECYCLER" translatable="false">MAX_CLIPS_IN_RECYCLER</string>
-    <string name="LAST_PROGRESS_LOCK_TIME">LAST_PROGRESS_LOCK_TIME</string>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/ripple_card" />
+        </shape>
+    </item>
+    <item android:state_enabled="true" android:state_focused="true">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/ripple_card" />
+        </shape>
+    </item>
+</selector>

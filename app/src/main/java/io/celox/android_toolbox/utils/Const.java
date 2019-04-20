@@ -24,5 +24,9 @@ package io.celox.android_toolbox.utils;
 public class Const {
 
     public static final int NETWORK_UPDATE_INTERVAL_SEC = 1;
+    public static final float DIALOG_DIM_AMOUNT = 0.67f;
+    public static final float RELATIVE_DIALOG_WIDTH = 0.8f;
 
+    public static final int DEFAULT_MAX_CLIPS_IN_RECYCLER = Integer.MAX_VALUE;
+    public static final int NAV_DRAWER_ICON_SIZE = 24;
 }

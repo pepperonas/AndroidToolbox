@@ -52,6 +52,25 @@
                     android:scheme="android-toolbox" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".dialogs.BatteryDialogActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/empty"
+            android:taskAffinity=""
+            android:theme="@style/AppTheme.Dialog" />
+        <activity
+            android:name=".dialogs.NetworkDialogActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/empty"
+            android:taskAffinity=""
+            android:theme="@style/AppTheme.Dialog" />
+        <activity
+            android:name=".ClipboardDialogActivity"
+            android:excludeFromRecents="true"
+            android:label="@string/empty"
+            android:taskAffinity=""
+            android:theme="@style/AppTheme.Dialog" />
+
         <service
             android:name=".MainService"
             android:enabled="true"

@@ -42,10 +42,6 @@ public class BootReceiver extends BroadcastReceiver {
         AesPrefs.init(context, "aes_config", "fSXwTkTKEH299YBcMKa6UeW", AesPrefs.LogMode.NONE);
 
         if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
-            //            SharedPreferences preferences = context.getSharedPreferences(
-            //                    Const.PREF_FILE_NAME, Context.MODE_PRIVATE);
-            //            boolean autostartEnabled = preferences.getBoolean(
-            //                    Const.P_AUTOSTART_ENABLED, true);
             if (AesPrefs.getBooleanRes(R.string.AUTOSTART_ENABLED, true)) {
                 Log.d(TAG, "onReceive " + "--- AUTO START ---");
                 Intent serviceIntent = new Intent(context, MainService.class);

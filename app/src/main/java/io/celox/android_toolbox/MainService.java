@@ -26,6 +26,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.TrafficStats;
+import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
@@ -40,9 +41,8 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Timer;
-import java.util.TimerTask;
 
+import io.celox.android_toolbox.models.ClipDataAdvanced;
 import io.celox.android_toolbox.utils.Const;
 import io.celox.android_toolbox.utils.Database;
 
@@ -60,9 +60,22 @@ public class MainService extends Service {
     private long mTmpLastRxMobile;
     private long mTmpLastTxMobile;
 
-    private String mClipboardText = "";
+    private String mClipboardContent = "";
+
     private Database mDb;
+
     private Handler mHandler = new Handler();
+
+    private Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                updateNotification();
+            } finally {
+                mHandler.postDelayed(mRunnable, 1000);
+            }
+        }
+    };
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -75,12 +88,14 @@ public class MainService extends Service {
 
         String channelId = getString(R.string.channel_id_network_notification);
         String channelName = getString(R.string.channel_name_network_notification);
-        NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName,
-                NotificationManager.IMPORTANCE_NONE);
-        notificationChannel.setLightColor(Color.BLUE);
-        notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.createNotificationChannel(notificationChannel);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName,
+                    NotificationManager.IMPORTANCE_NONE);
+            notificationChannel.setLightColor(Color.BLUE);
+            notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
+            mNotificationManager.createNotificationChannel(notificationChannel);
+        }
 
         ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         if (clipboardManager != null) {
@@ -98,36 +113,17 @@ public class MainService extends Service {
 
         startForeground(NOTIFICATION_ID, notification);
 
-        launchRunnable();
+        mHandler.post(mRunnable);
 
-        //        launchTimerTask();
+        //        registerReceiver();
 
         return START_STICKY;
     }
 
-    private void launchRunnable() {
-        mHandler.post(mRunnable);
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
     }
-
-    private void launchTimerTask() {
-        Timer timer = new Timer();
-        TimerTask task = new TimerTask() {
-            @Override
-            public void run() {
-                updateNotification();
-            }
-        };
-        timer.scheduleAtFixedRate(task, 0, 1000);
-    }
-
-    private Runnable mRunnable = new Runnable() {
-        @Override
-        public void run() {
-            updateNotification();
-
-            mHandler.postDelayed(mRunnable, 1000);
-        }
-    };
 
     public void updateNotification() {
         long rx_ivl = (long) ((TrafficStats.getTotalRxBytes() - mTmpLastRx)
@@ -202,7 +198,7 @@ public class MainService extends Service {
             public void run() {
                 mNotificationBuilder.setSmallIcon(finalImageResourceId);
                 mNotificationBuilder.setContentTitle(down + "  |  " + up);
-                mNotificationBuilder.setContentText(sdf.format(date) + " Clip: " + mClipboardText);
+                mNotificationBuilder.setContentText(sdf.format(date) + " Clip: " + mClipboardContent);
                 mNotificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
             }
         }, 1000);
@@ -225,10 +221,6 @@ public class MainService extends Service {
         private long mLastAddedClip = 0;
 
         public void onPrimaryClipChanged() {
-            //            SharedPreferences preferences = getSharedPreferences(
-            //                    Const.PREF_FILE_NAME, Context.MODE_PRIVATE);
-            //            boolean clipboardEnabled = preferences.getBoolean(
-            //                    Const.P_CLIPBOARD_ENABLED, true);
             if (!AesPrefs.getBooleanRes(R.string.CLIPBOARD_ENABLED, true)) {
                 return;
             }
@@ -241,11 +233,13 @@ public class MainService extends Service {
                 ClipData.Item item;
                 if (cd != null) {
                     item = cd.getItemAt(0);
-                    mClipboardText = item.getText().toString();
-                    Log.d(TAG, "onPrimaryClipChanged " + mClipboardText);
                     if ((System.currentTimeMillis() - mLastAddedClip) > DELTA_TIME_MS) {
+                        // TODO: 2019-04-20 add types
+                        ClipDataAdvanced.Type type = ClipDataAdvanced.Type.DEFAULT;
+                        mClipboardContent = item.getText().toString();
+                        Log.d(TAG, "onPrimaryClipChanged " + mClipboardContent);
                         mLastAddedClip = System.currentTimeMillis();
-                        mDb.insertClipboardText(mClipboardText);
+                        mDb.insertClipboardText(type, mClipboardContent, System.currentTimeMillis());
                     }
                 }
             } catch (Exception e) {

@@ -19,8 +19,15 @@ package io.celox.android_toolbox;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+
+    private Menu mMenu;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,4 +38,36 @@ public class MainActivity extends AppCompatActivity {
         startService(serviceIntent);
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        Log.d(TAG, "onCreateOptionsMenu: ");
+
+        getMenuInflater().inflate(R.menu.main, menu);
+        mMenu = menu;
+        return true;
+    }
+
+    @Override
+    public boolean onMenuOpened(int featureId, Menu menu) {
+        Log.d(TAG, "onMenuOpened: ");
+
+        return super.onMenuOpened(featureId, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d(TAG, "onOptionsItemSelected: ");
+
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                showSettings();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showSettings() {
+
+    }
 }
