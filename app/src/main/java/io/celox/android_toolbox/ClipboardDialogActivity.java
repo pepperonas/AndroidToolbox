@@ -84,7 +84,7 @@ public class ClipboardDialogActivity extends AppCompatActivity {
         getWindow().setLayout(screenWidth, LinearLayout.LayoutParams.WRAP_CONTENT);
 
         mDb = new Database(this);
-        mClips = mDb.getClipData(AesPrefs.getInt(getString(R.string.MAX_CLIPS_IN_RECYCLER), Const.DEFAULT_MAX_CLIPS_IN_RECYCLER));
+        mClips = mDb.getClipData(false);
         if (mClips.isEmpty()) {
             ToastUtils.toastShort(R.string.no_clip_data_set);
             finish();
@@ -194,7 +194,6 @@ public class ClipboardDialogActivity extends AppCompatActivity {
                 });
 
             } else {
-
                 Drawable d = new IconicsDrawable(ClipboardDialogActivity.this,
                         CommunityMaterial.Icon.cmd_lock_outline).colorRes(R.color.stock_android_white).sizeDp(24);
                 ibtnLock.setImageDrawable(d);
@@ -223,7 +222,7 @@ public class ClipboardDialogActivity extends AppCompatActivity {
     } // ensureInitLockButton
 
     public void setData() {
-        mClips = mDb.getClipData(AesPrefs.getInt(getString(R.string.MAX_CLIPS_IN_RECYCLER), Const.DEFAULT_MAX_CLIPS_IN_RECYCLER));
+        mClips = mDb.getClipData(false);
         ClipDataAdvancedAdapter adapter = new ClipDataAdvancedAdapter(this, mDb, mClips);
         mRecyclerView.setAdapter(adapter);
     }

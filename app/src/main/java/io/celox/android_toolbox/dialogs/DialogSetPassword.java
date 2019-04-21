@@ -47,7 +47,7 @@ public class DialogSetPassword {
                 .message(ctx.getString(R.string.dialog_set_password_msg))
                 .icon(new IconicsDrawable(ctx, CommunityMaterial.Icon.cmd_key_variant)
                         .colorRes(R.color.dialog_icon)
-                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE))
+                        .sizeDp(Const.DIALOG_ICON_SIZE))
                 .positiveText(ctx.getString(R.string.ok)).negativeText(ctx.getString(R.string.cancel))
                 .buttonCallback(new MaterialDialog.ButtonCallback() {
                     @Override
@@ -60,7 +60,6 @@ public class DialogSetPassword {
                             AesPrefs.putRes(R.string.ENCRYPTION_PASSWORD, etInput.getText().toString());
                             ToastUtils.toastShort(R.string.password_saved);
                             db.encryptClipboard(etInput.getText().toString());
-                            AesPrefs.putBooleanRes(R.string.ENCRYPT_CLIPBOARD, true);
                         } else {
                             ToastUtils.toastShort(R.string.invalid_input);
                         }
@@ -71,7 +70,6 @@ public class DialogSetPassword {
                         super.onNegative(dialog);
 
                         cbxEncrypt.setChecked(false);
-                        AesPrefs.putBooleanRes(R.string.ENCRYPT_CLIPBOARD, false);
                     }
                 })
                 .show();

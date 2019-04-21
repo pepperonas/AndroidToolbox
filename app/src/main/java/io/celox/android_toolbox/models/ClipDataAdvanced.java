@@ -20,7 +20,6 @@ import com.pepperonas.andbasx.system.DeviceUtils;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import io.celox.android_toolbox.custom.SizedText;
 
@@ -34,7 +33,7 @@ public class ClipDataAdvanced {
         DEFAULT
     }
 
-    private Date timestamp;
+    private long timestamp;
 
     private Type type;
     private String content;
@@ -52,7 +51,7 @@ public class ClipDataAdvanced {
      * @param type      the type
      * @param content   the content
      */
-    public ClipDataAdvanced(Date timestamp, Type type, String content, long iv) {
+    public ClipDataAdvanced(long timestamp, Type type, String content, long iv) {
         this.timestamp = timestamp;
         this.type = type;
         this.content = content;
@@ -65,7 +64,7 @@ public class ClipDataAdvanced {
      *
      * @return the timestamp
      */
-    public Date getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
@@ -86,7 +85,7 @@ public class ClipDataAdvanced {
      *
      * @param timestamp the timestamp
      */
-    public void setTimestamp(Date timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -150,5 +149,16 @@ public class ClipDataAdvanced {
 
     public long getIv() {
         return iv;
+    }
+
+    @Override
+    public String toString() {
+        return "ClipDataAdvanced{" +
+                "timestamp=" + timestamp +
+                ", type=" + type +
+                ", content='" + content + '\'' +
+                ", sizedText=" + sizedText +
+                ", iv=" + iv +
+                '}';
     }
 }

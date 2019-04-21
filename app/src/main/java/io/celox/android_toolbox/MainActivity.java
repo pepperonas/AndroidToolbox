@@ -25,11 +25,14 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.pepperonas.aespreferences.AesPrefs;
+
+import io.celox.android_toolbox.utils.Database;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-
-    private Menu mMenu;
+    private Database mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
         Intent serviceIntent = new Intent(this, MainService.class);
         startService(serviceIntent);
+
+        mDb = new Database(this);
+        mDb.wipe();
+
+        Log.i(TAG, "onCreate: current encryption password is: '" + AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "") + "'");
     }
 
     @Override
@@ -51,6 +59,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
+        if (mDb != null) {
+            mDb.close();
+        }
+
         super.onDestroy();
     }
 
@@ -59,7 +71,6 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreateOptionsMenu: ");
 
         getMenuInflater().inflate(R.menu.main, menu);
-        mMenu = menu;
         return true;
     }
 

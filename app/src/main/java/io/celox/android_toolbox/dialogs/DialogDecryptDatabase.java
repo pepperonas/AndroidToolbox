@@ -44,9 +44,9 @@ public class DialogDecryptDatabase {
 
     public DialogDecryptDatabase(@NonNull final Activity activity, final CheckBoxPreference cbxEncrypt, final Database db) {
         new MaterialDialog.Builder(activity)
-                .customView(R.layout.dialog_set_password)
                 .title(activity.getString(R.string.dialog_enter_password_title))
                 .message(activity.getString(R.string.dialog_enter_password_to_decrypt_msg))
+                .customView(R.layout.dialog_set_password)
                 .icon(new IconicsDrawable(activity, CommunityMaterial.Icon.cmd_lock_open_outline)
                         .colorRes(R.color.dialog_icon)
                         .sizeDp(Const.NAV_DRAWER_ICON_SIZE))
@@ -92,7 +92,6 @@ public class DialogDecryptDatabase {
                         db.deleteAllClips();
                         cbxEncrypt.setChecked(false);
                         AesPrefs.putRes(R.string.ENCRYPTION_PASSWORD, "");
-                        AesPrefs.putBooleanRes(R.string.ENCRYPT_CLIPBOARD, false);
 
                         //                        activity.sendBroadcast(new Intent(MainService.BROADCAST_CLIP_DELETED));
                     }

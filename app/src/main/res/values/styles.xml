@@ -23,6 +23,7 @@
         <item name="colorAccent">@color/colorAccent</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="colorControlHighlight">@color/indigo_100</item>
     </style>
 
     <style name="AppTheme.PopupOverlay" parent="AppTheme">
@@ -33,12 +34,7 @@
     </style>
 
     <style name="AppTheme.Dialog.EnterPassword" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:textColor">@color/grey_900</item>
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
+
     </style>
 
     <!--DIALOG-->
@@ -54,5 +50,6 @@
             @color/secondary_text_default_material_dark_failsafe
         </item>
     </style>
+
 
 </resources>

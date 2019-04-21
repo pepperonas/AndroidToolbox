@@ -46,10 +46,10 @@ public class DialogEnterPassword {
         new MaterialDialog.Builder(cda, R.style.AppTheme_Dialog_EnterPassword)
                 .title(cda.getString(R.string.dialog_enter_password_title))
                 .message(cda.getString(R.string.dialog_enter_password_msg))
+                .customView(R.layout.dialog_enter_password)
                 .icon(new IconicsDrawable(cda, CommunityMaterial.Icon.cmd_key_variant)
                         .colorRes(R.color.dialog_icon)
-                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE))
-                .customView(R.layout.dialog_enter_password)
+                        .sizeDp(Const.DIALOG_ICON_SIZE))
                 .positiveText(cda.getString(R.string.ok))
                 .negativeText(cda.getString(R.string.cancel))
                 .buttonCallback(new MaterialDialog.ButtonCallback() {
@@ -66,7 +66,7 @@ public class DialogEnterPassword {
 
                                 int mins = getMins(getPos(sb.getProgress()));
                                 AesPrefs.putLongRes(R.string.LOGOUT_TIME,
-                                        System.currentTimeMillis() + (mins * 1000 * 60));
+                                        System.currentTimeMillis() + (mins * 60 * 1000));
                                 AesPrefs.putIntRes(R.string.LAST_PROGRESS_LOCK_TIME, sb.getProgress());
 
                                 cda.ensureInitLockButton();
@@ -90,10 +90,15 @@ public class DialogEnterPassword {
                     @Override
                     public void onShow(AlertDialog dialog) {
                         super.onShow(dialog);
-                        final String[] items = new String[]{"1 " + cda.getString(R.string.minute),
-                                "5 " + cda.getString(R.string.minutes), "15 " + cda.getString(R.string.minutes),
+                        final String[] items = new String[]{
+                                "1 " + cda.getString(R.string.minute),
+                                "5 " + cda.getString(R.string.minutes),
+                                "15 " + cda.getString(R.string.minutes),
                                 "30 " + cda.getString(R.string.minutes),
                                 "60 " + cda.getString(R.string.minutes)};
+
+                        EditText etInput = dialog.findViewById(R.id.et_enter_password);
+                        etInput.requestFocus();
 
                         final TextView tvInfo = dialog.findViewById(R.id.tv_password_expiration_time);
                         final SeekBar sb = dialog.findViewById(R.id.seekBar);

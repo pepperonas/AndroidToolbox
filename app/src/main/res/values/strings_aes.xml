@@ -18,6 +18,5 @@
     <string name="AUTOSTART_ENABLED">AUTOSTART_ENABLED</string>
     <string name="CLIPBOARD_ENABLED">CLIPBOARD_ENABLED</string>
     <string name="ENCRYPTION_PASSWORD">ENCRYPTION_PASSWORD</string>
-    <string name="MAX_CLIPS_IN_RECYCLER" translatable="false">MAX_CLIPS_IN_RECYCLER</string>
     <string name="LAST_PROGRESS_LOCK_TIME">LAST_PROGRESS_LOCK_TIME</string>
 </resources>

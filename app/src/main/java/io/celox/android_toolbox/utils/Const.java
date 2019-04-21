@@ -29,4 +29,5 @@ public class Const {
 
     public static final int DEFAULT_MAX_CLIPS_IN_RECYCLER = Integer.MAX_VALUE;
     public static final int NAV_DRAWER_ICON_SIZE = 24;
+    public static final int DIALOG_ICON_SIZE = 18;
 }

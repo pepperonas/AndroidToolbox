@@ -25,12 +25,11 @@ import android.util.Log;
 
 import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.aespreferences.Crypt;
+import com.pepperonas.andbasx.AndBasx;
+import com.pepperonas.andbasx.base.ToastUtils;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 import io.celox.android_toolbox.R;
 import io.celox.android_toolbox.models.ClipDataAdvanced;
@@ -48,6 +47,7 @@ public class Database extends SQLiteOpenHelper {
 
     private static final String TABLE_CLIPBOARD = "tbl_clipboard";
     private static final String ID = "id";
+    private static final String TS = "ts";
     private static final String CREATED = "created";
 
     // clipboard
@@ -64,14 +64,24 @@ public class Database extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, 1);
     }
 
+    public void wipe() {
+        if (AndBasx.getContext() != null) {
+            AndBasx.getContext().deleteDatabase(DATABASE_NAME);
+            ToastUtils.toastShort("Database deleted");
+        } else {
+            Log.w(TAG, "deleteDatabase: Missing context while deleting database...");
+        }
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE " + TABLE_CLIPBOARD + " (" +
                 ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                CREATED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                TS + " INTEGER DEFAULT NULL, " +
                 TBL_CB_TYPE + " INTEGER DEFAULT NULL, " +
                 TBL_CB_CONTENT + " TEXT DEFAULT NULL, " +
-                TBL_CB_IV + " INTEGER DEFAULT NULL " +
+                TBL_CB_IV + " INTEGER DEFAULT NULL, " +
+                CREATED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP " +
                 ");");
     }
 
@@ -95,6 +105,7 @@ public class Database extends SQLiteOpenHelper {
         }
 
         ContentValues contentValues = new ContentValues();
+        contentValues.put(TS, System.currentTimeMillis());
         contentValues.put(TBL_CB_TYPE, type.ordinal());
         contentValues.put(TBL_CB_CONTENT, content);
         contentValues.put(TBL_CB_IV, iv);
@@ -105,55 +116,51 @@ public class Database extends SQLiteOpenHelper {
         }
     }
 
-    public List<ClipDataAdvanced> getClipData(int i) {
+    public List<ClipDataAdvanced> getClipData(boolean encrypt) {
         String selectQuery = "SELECT * FROM " + TABLE_CLIPBOARD + ";";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
-        int ctr = 0;
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         List<ClipDataAdvanced> results = new ArrayList<>();
 
         if (AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals("")
-                || AesPrefs.getLongRes(R.string.LOGOUT_TIME, 0) < System.currentTimeMillis()) {
-            if (c.moveToLast()) {
-                do {
-                    try {
-                        ClipDataAdvanced.Type type;
-                        switch (c.getInt(2)) {
-                            case 0:
-                                type = ClipDataAdvanced.Type.DEFAULT;
-                                break;
-                            default:
-                                type = ClipDataAdvanced.Type.DEFAULT;
-                        }
-                        results.add(new ClipDataAdvanced(sdf.parse(c.getString(1)), type, c.getString(3), c.getLong(4)));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                } while (c.moveToPrevious() && ((ctr++) < i));
+                || AesPrefs.getLongRes(R.string.LOGOUT_TIME, 0) < System.currentTimeMillis()
+                || encrypt) {
+            Log.i(TAG, "getClipData: will get unencrypted data...");
+            c.moveToPosition(-1);
+            while (c.moveToNext()) {
+                ClipDataAdvanced.Type type;
+                switch (c.getInt(2)) {
+                    case 0:
+                        type = ClipDataAdvanced.Type.DEFAULT;
+                        break;
+                    default:
+                        type = ClipDataAdvanced.Type.DEFAULT;
+                }
+                results.add(new ClipDataAdvanced(c.getLong(1), type, c.getString(3), c.getLong(4)));
             }
             c.close();
             return results;
         } else {
-            if (c.moveToLast()) {
-                do {
-                    try {
-                        ClipDataAdvanced.Type type;
-                        switch (c.getInt(2)) {
-                            case 0:
-                                type = ClipDataAdvanced.Type.DEFAULT;
-                                break;
-                            default:
-                                type = ClipDataAdvanced.Type.DEFAULT;
-                        }
-                        results.add(new ClipDataAdvanced(sdf.parse(c.getString(1)), type,
-                                Crypt.decrypt(AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, ""),
-                                        c.getString(3), c.getLong(4)), c.getLong(4)));
-                    } catch (Exception e) {
-                        Log.e(TAG, "getClipData error while decrypting...");
+            Log.i(TAG, "getClipData: will get encrypted data...");
+            c.moveToPosition(-1);
+            while (c.moveToNext()) {
+                try {
+                    ClipDataAdvanced.Type type;
+                    switch (c.getInt(2)) {
+                        case 0:
+                            type = ClipDataAdvanced.Type.DEFAULT;
+                            break;
+                        default:
+                            type = ClipDataAdvanced.Type.DEFAULT;
                     }
-                } while (c.moveToPrevious() && ((ctr++) < i));
+                    results.add(new ClipDataAdvanced(c.getLong(1), type,
+                            Crypt.decrypt(AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, ""),
+                                    c.getString(3), c.getLong(4)), c.getLong(4)));
+                } catch (Exception e) {
+                    Log.e(TAG, "getClipData error while decrypting...", e);
+                }
             }
             c.close();
             return results;
@@ -169,17 +176,12 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public int getClipDataCount() {
-        String selectQuery = "SELECT * FROM " + TABLE_CLIPBOARD + ";";
+        String selectQuery = "SELECT COUNT(*) as count FROM " + TABLE_CLIPBOARD + ";";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
-        int ctr = 0;
-        if (c.moveToLast()) {
-            do {
-                if (c.getString(3) != null && !c.getString(3).isEmpty()) {
-                    ctr++;
-                }
-            } while (c.moveToPrevious());
-        }
+        c.moveToPosition(-1);
+        c.moveToNext();
+        int ctr = c.getInt(0);
         c.close();
         return ctr;
     }
@@ -195,14 +197,14 @@ public class Database extends SQLiteOpenHelper {
     }
 
     public void encryptClipboard(String s) {
-        List<ClipDataAdvanced> data = getClipData(Integer.MAX_VALUE);
+        List<ClipDataAdvanced> data = getClipData(true);
         for (ClipDataAdvanced cda : data) {
             encryptClipDataEntry(cda, s);
         }
     }
 
     public void decryptClipboard(String s) {
-        List<ClipDataAdvanced> data = getClipData(Integer.MAX_VALUE);
+        List<ClipDataAdvanced> data = getClipData(false);
         for (ClipDataAdvanced cda : data) {
             decryptClipDataEntry(cda, s);
         }
@@ -211,11 +213,15 @@ public class Database extends SQLiteOpenHelper {
     private void encryptClipDataEntry(ClipDataAdvanced clipDataAdvanced, String password) {
         SQLiteDatabase db = this.getWritableDatabase();
         long iv = System.currentTimeMillis();
-        String encrypted = Crypt.encrypt(password, clipDataAdvanced.getContent(), iv);
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TBL_CB_CONTENT, encrypted);
-        contentValues.put(TBL_CB_IV, iv);
-        db.update(TBL_CB_CONTENT, contentValues, CREATED + " = " + clipDataAdvanced.getTimestamp(), null);
+        try {
+            String encrypted = Crypt.encrypt(password, clipDataAdvanced.getContent(), iv);
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TBL_CB_CONTENT, encrypted);
+            contentValues.put(TBL_CB_IV, iv);
+            db.update(TABLE_CLIPBOARD, contentValues, TS + " = " + clipDataAdvanced.getTimestamp(), null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void decryptClipDataEntry(ClipDataAdvanced clipDataAdvanced, String password) {
@@ -225,9 +231,9 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(TBL_CB_CONTENT, decrypted);
         contentValues.put(TBL_CB_IV, clipDataAdvanced.getIv());
         try {
-            db.update(TBL_CB_CONTENT, contentValues, TBL_CB_IV + "= " + clipDataAdvanced.getTimestamp(), null);
+            db.update(TABLE_CLIPBOARD, contentValues, TS + " = " + clipDataAdvanced.getTimestamp(), null);
         } catch (Exception e) {
-            Log.e(TAG, "decryptClipDataEntry: ", e);
+            e.printStackTrace();
         }
     }
 }
