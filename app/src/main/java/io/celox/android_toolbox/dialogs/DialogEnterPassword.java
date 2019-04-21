@@ -105,8 +105,6 @@ public class DialogEnterPassword {
 
                         final TextView tvInfo = dialog.findViewById(R.id.tv_password_expiration_time);
                         final SeekBar sb = dialog.findViewById(R.id.seekBar);
-                        //                        sb.setEnabled(false);
-                        sb.setProgress(AesPrefs.getIntRes(R.string.LAST_PROGRESS_LOCK_TIME, 85));
 
                         tvInfo.setEnabled(false);
                         tvInfo.setText("");
@@ -126,6 +124,8 @@ public class DialogEnterPassword {
                             @Override
                             public void onStopTrackingTouch(SeekBar seekBar) { }
                         });
+
+                        sb.setProgress(AesPrefs.getIntRes(R.string.LAST_PROGRESS_LOCK_TIME, 85));
 
                         ((EditText) dialog.findViewById(R.id.et_enter_password))
                                 .addTextChangedListener(new TextWatcher() {
