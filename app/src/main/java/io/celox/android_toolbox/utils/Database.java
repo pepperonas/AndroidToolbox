@@ -129,12 +129,10 @@ public class Database extends SQLiteOpenHelper {
             c.moveToPosition(-1);
             while (c.moveToNext()) {
                 ClipDataAdvanced.Type type;
-                switch (c.getInt(2)) {
-                    case 0:
-                        type = ClipDataAdvanced.Type.DEFAULT;
-                        break;
-                    default:
-                        type = ClipDataAdvanced.Type.DEFAULT;
+                if (c.getInt(2) == 0) {
+                    type = ClipDataAdvanced.Type.DEFAULT;
+                } else {
+                    type = ClipDataAdvanced.Type.DEFAULT;
                 }
                 results.add(new ClipDataAdvanced(c.getLong(1), type, c.getString(3), c.getLong(4)));
             }
@@ -146,12 +144,10 @@ public class Database extends SQLiteOpenHelper {
             while (c.moveToNext()) {
                 try {
                     ClipDataAdvanced.Type type;
-                    switch (c.getInt(2)) {
-                        case 0:
-                            type = ClipDataAdvanced.Type.DEFAULT;
-                            break;
-                        default:
-                            type = ClipDataAdvanced.Type.DEFAULT;
+                    if (c.getInt(2) == 0) {
+                        type = ClipDataAdvanced.Type.DEFAULT;
+                    } else {
+                        type = ClipDataAdvanced.Type.DEFAULT;
                     }
                     results.add(new ClipDataAdvanced(c.getLong(1), type,
                             Crypt.decrypt(AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, ""),
@@ -168,6 +164,7 @@ public class Database extends SQLiteOpenHelper {
     /**
      * Delete all.
      */
+    @SuppressWarnings("unused")
     public void deleteAll() {
         SQLiteDatabase db = this.getWritableDatabase();
         db.execSQL("DELETE FROM " + TABLE_CLIPBOARD + ";");

@@ -35,7 +35,6 @@ import java.text.MessageFormat;
 
 import io.celox.android_toolbox.ClipboardDialogActivity;
 import io.celox.android_toolbox.R;
-import io.celox.android_toolbox.utils.Const;
 
 /**
  * @author Martin Pfeffer (celox.io)
@@ -45,12 +44,11 @@ public class DialogEnterPassword {
 
     public DialogEnterPassword(final ClipboardDialogActivity cda) {
         new MaterialDialog.Builder(cda, R.style.AppTheme_Dialog_EnterPassword)
-                .title(cda.getString(R.string.dialog_enter_password_title))
-                .message(cda.getString(R.string.dialog_enter_password_msg))
+                .title(cda.getString(R.string.enter_password))
                 .customView(R.layout.dialog_enter_password)
                 .icon(new IconicsDrawable(cda, CommunityMaterial.Icon.cmd_key_variant)
                         .colorRes(R.color.dialog_icon)
-                        .sizeDp(Const.DIALOG_ICON_SIZE))
+                        .sizeDp(cda.getResources().getInteger(R.integer.dialog_icon_size)))
                 .positiveText(cda.getString(R.string.ok))
                 .negativeText(cda.getString(R.string.cancel))
                 .buttonCallback(new MaterialDialog.ButtonCallback() {
@@ -80,11 +78,6 @@ public class DialogEnterPassword {
                             AesPrefs.putLongRes(R.string.LOGOUT_TIME, 0);
                         }
                     }
-
-                    @Override
-                    public void onNegative(MaterialDialog dialog) {
-                        super.onNegative(dialog);
-                    }
                 })
                 .showListener(new MaterialDialog.ShowListener() {
                     @Override
@@ -93,12 +86,11 @@ public class DialogEnterPassword {
                         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
 
                         final String[] items = new String[]{
-                                // TODO: 2019-04-21 add strings...
-                                "1 Minute",
-                                "5 Minutes",
-                                "15 Minutes",
-                                "30 Minutes",
-                                "60 Minutes"};
+                                cda.getString(R.string.one_minute),
+                                cda.getString(R.string.five_minutes),
+                                cda.getString(R.string.fifteen_minutes),
+                                cda.getString(R.string.thirty_minutes),
+                                cda.getString(R.string.sixty_minutes)};
 
                         EditText etInput = dialog.findViewById(R.id.et_enter_password);
                         etInput.requestFocus();

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package io.celox.android_toolbox.custom;
+package io.celox.android_toolbox.models;
 
 import androidx.annotation.NonNull;
 

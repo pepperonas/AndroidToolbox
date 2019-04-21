@@ -38,7 +38,6 @@
             android:background="@color/colorPrimary"
             android:orientation="horizontal">
 
-            <!--TODO: set layout_width to match_parent if messed up-->
             <TextView
                 android:id="@+id/tv_header"
                 style="@style/Base.TextAppearance.AppCompat.Large"
@@ -69,6 +68,8 @@
             android:layout_width="match_parent"
             android:layout_height="280dp"
             android:layout_below="@+id/ll_header"
+            android:layout_marginStart="4dp"
+            android:layout_marginEnd="4dp"
             android:background="@color/transparent" />
 
         <ImageView

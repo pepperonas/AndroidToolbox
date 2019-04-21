@@ -62,6 +62,7 @@ public class ClipDataAdvancedAdapter extends
         return mClips.size();
     }
 
+    @NotNull
     @Override
     public ClipDataAdvancedViewHolder onCreateViewHolder(@NotNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())

@@ -34,7 +34,8 @@
     <string name="no_clip_data_set">The clipboard is empty</string>
 
     <string name="dialog_enter_password_title">Password required</string>
-    <string name="dialog_enter_password_msg">Enter your password to access the database.</string>
+    <string name="enter_password">Enter password…</string>
+    <string name="enter_password_">Enter password…</string>
     <string name="dialog_enter_password_to_decrypt_msg">Enter your password to decrypt the database.</string>
     <string name="remember_for">Remember for</string>
     <string name="wrong_password">Wrong password</string>
@@ -71,5 +72,10 @@
 
     <string name="dialog_set_password_title">Set password</string>
     <string name="dialog_set_password_msg">Choose a strong encryption password.</string>
+    <string name="one_minute">1 Minute</string>
+    <string name="five_minutes">5 Minutes</string>
+    <string name="fifteen_minutes">15 Minutes</string>
+    <string name="thirty_minutes">30 Minutes</string>
+    <string name="sixty_minutes">60 Minutes</string>
 
 </resources>

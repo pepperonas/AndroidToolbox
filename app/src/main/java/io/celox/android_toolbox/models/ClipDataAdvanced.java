@@ -21,8 +21,6 @@ import com.pepperonas.andbasx.system.DeviceUtils;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
-import io.celox.android_toolbox.custom.SizedText;
-
 /**
  * @author Martin Pfeffer (celox.io)
  * @see <a href="mailto:martin.pfeffer@celox.io">martin.pfeffer@celox.io</a>
