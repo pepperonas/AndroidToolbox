@@ -34,7 +34,7 @@
     <string name="no_clip_data_set">The clipboard is empty</string>
 
     <string name="dialog_enter_password_title">Password required</string>
-    <string name="enter_password">Enter password…</string>
+    <string name="enter_password">Enter password</string>
     <string name="enter_password_">Enter password…</string>
     <string name="dialog_enter_password_to_decrypt_msg">Enter your password to decrypt the database.</string>
     <string name="remember_for">Remember for</string>
