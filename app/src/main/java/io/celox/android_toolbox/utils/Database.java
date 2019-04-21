@@ -79,7 +79,7 @@ public class Database extends SQLiteOpenHelper {
                 ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                 TS + " INTEGER DEFAULT NULL, " +
                 TBL_CB_TYPE + " INTEGER DEFAULT NULL, " +
-                TBL_CB_CONTENT + " TEXT DEFAULT NULL, " +
+                TBL_CB_CONTENT + " TEXT UNIQUE NOT NULL ON CONFLICT REPLACE, " +
                 TBL_CB_IV + " INTEGER DEFAULT NULL, " +
                 CREATED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP " +
                 ");");
@@ -110,20 +110,18 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(TBL_CB_CONTENT, content);
         contentValues.put(TBL_CB_IV, iv);
         try {
-            db.insert(TABLE_CLIPBOARD, null, contentValues);
+            db.insertWithOnConflict(TABLE_CLIPBOARD, null, contentValues, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e) {
             android.util.Log.e(TAG, "insertClipboardText: " + e.getMessage());
         }
     }
 
     public List<ClipDataAdvanced> getClipData(boolean encrypt) {
-        String selectQuery = "SELECT * FROM " + TABLE_CLIPBOARD + ";";
+        String selectQuery = "SELECT * FROM " + TABLE_CLIPBOARD + " ORDER BY " + TS + " DESC;";
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
 
-        //        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         List<ClipDataAdvanced> results = new ArrayList<>();
-
         if (AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals("")
                 || AesPrefs.getLongRes(R.string.LOGOUT_TIME, 0) < System.currentTimeMillis()
                 || encrypt) {
@@ -215,6 +213,7 @@ public class Database extends SQLiteOpenHelper {
         long iv = System.currentTimeMillis();
         try {
             String encrypted = Crypt.encrypt(password, clipDataAdvanced.getContent(), iv);
+            Log.i(TAG, "encryptClipDataEntry: " + encrypted);
             ContentValues contentValues = new ContentValues();
             contentValues.put(TBL_CB_CONTENT, encrypted);
             contentValues.put(TBL_CB_IV, iv);
@@ -231,7 +230,8 @@ public class Database extends SQLiteOpenHelper {
         contentValues.put(TBL_CB_CONTENT, decrypted);
         contentValues.put(TBL_CB_IV, clipDataAdvanced.getIv());
         try {
-            db.update(TABLE_CLIPBOARD, contentValues, TS + " = " + clipDataAdvanced.getTimestamp(), null);
+            db.updateWithOnConflict(TABLE_CLIPBOARD, contentValues, TS + " = " + clipDataAdvanced.getTimestamp(),
+                    null, SQLiteDatabase.CONFLICT_REPLACE);
         } catch (Exception e) {
             e.printStackTrace();
         }

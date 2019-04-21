@@ -25,8 +25,6 @@ import android.view.MenuItem;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import com.pepperonas.aespreferences.AesPrefs;
-
 import io.celox.android_toolbox.utils.Database;
 
 public class MainActivity extends AppCompatActivity {
@@ -46,10 +44,14 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, MainService.class);
         startService(serviceIntent);
 
+        if (getResources().getBoolean(R.bool.wipe_database)) {
+            wipeDatabase();
+        }
+    }
+
+    private void wipeDatabase() {
         mDb = new Database(this);
         mDb.wipe();
-
-        Log.i(TAG, "onCreate: current encryption password is: '" + AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "") + "'");
     }
 
     @Override

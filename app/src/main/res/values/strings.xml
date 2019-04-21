@@ -65,7 +65,6 @@
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="encrypt_clipboard">Encrypt Clipboard</string>
     <string name="clipboard">Clipboard</string>
-    <!--<string name="ENCRYPT_CLIPBOARD">ENCRYPT_CLIPBOARD</string>-->
     <string name="password_saved">Password saved</string>
     <string name="clipboard_decrypted">Clipboard decrypted</string>
     <string name="encryption_disabled">Encryption disabled</string>
