@@ -90,6 +90,8 @@ public class DialogEnterPassword {
                     @Override
                     public void onShow(final AlertDialog dialog) {
                         super.onShow(dialog);
+                        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(false);
+
                         final String[] items = new String[]{
                                 // TODO: 2019-04-21 add strings...
                                 "1 Minute",
@@ -130,15 +132,10 @@ public class DialogEnterPassword {
                                     @Override
                                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                                         dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(count != 0);
-                                        //                                        sb.setEnabled(count != 0);
                                         String text;
-                                        if (count != 0) {
-                                            text = MessageFormat.format("{0} {1}",
-                                                    cda.getString(R.string.remember_for),
-                                                    items[getPos(sb.getProgress())]);
-                                        } else {
-                                            text = "";
-                                        }
+                                        text = MessageFormat.format("{0} {1}",
+                                                cda.getString(R.string.remember_for),
+                                                items[getPos(sb.getProgress())]);
                                         tvInfo.setText(text);
                                     }
 
