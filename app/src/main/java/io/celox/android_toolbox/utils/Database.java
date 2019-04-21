@@ -184,9 +184,9 @@ public class Database extends SQLiteOpenHelper {
         return ctr;
     }
 
-    public void deleteClipData(String content) {
+    public void deleteClipData(long timestamp) {
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + TABLE_CLIPBOARD + " WHERE " + TBL_CB_CONTENT + " = '" + content + "';");
+        db.execSQL("DELETE FROM " + TABLE_CLIPBOARD + " WHERE " + TS + " = '" + timestamp + "';");
     }
 
     public void deleteAllClips() {

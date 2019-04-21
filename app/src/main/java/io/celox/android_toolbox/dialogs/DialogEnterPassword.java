@@ -17,6 +17,7 @@
 package io.celox.android_toolbox.dialogs;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.widget.EditText;
@@ -57,7 +58,6 @@ public class DialogEnterPassword {
                     public void onPositive(MaterialDialog dialog) {
                         super.onPositive(dialog);
                         EditText etInput = dialog.findViewById(R.id.et_enter_password);
-
                         if (!TextUtils.isEmpty(etInput.getText().toString())) {
                             if (etInput.getText().toString()
                                     .equals(AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, ""))) {
@@ -88,21 +88,22 @@ public class DialogEnterPassword {
                 })
                 .showListener(new MaterialDialog.ShowListener() {
                     @Override
-                    public void onShow(AlertDialog dialog) {
+                    public void onShow(final AlertDialog dialog) {
                         super.onShow(dialog);
                         final String[] items = new String[]{
-                                "1 " + cda.getString(R.string.minute),
-                                "5 " + cda.getString(R.string.minutes),
-                                "15 " + cda.getString(R.string.minutes),
-                                "30 " + cda.getString(R.string.minutes),
-                                "60 " + cda.getString(R.string.minutes)};
+                                // TODO: 2019-04-21 add strings...
+                                "1 Minute",
+                                "5 Minutes",
+                                "15 Minutes",
+                                "30 Minutes",
+                                "60 Minutes"};
 
                         EditText etInput = dialog.findViewById(R.id.et_enter_password);
                         etInput.requestFocus();
 
                         final TextView tvInfo = dialog.findViewById(R.id.tv_password_expiration_time);
                         final SeekBar sb = dialog.findViewById(R.id.seekBar);
-                        sb.setEnabled(false);
+                        //                        sb.setEnabled(false);
                         sb.setProgress(AesPrefs.getIntRes(R.string.LAST_PROGRESS_LOCK_TIME, 85));
 
                         tvInfo.setEnabled(false);
@@ -124,27 +125,29 @@ public class DialogEnterPassword {
                             public void onStopTrackingTouch(SeekBar seekBar) { }
                         });
 
-                        ((EditText) dialog.findViewById(R.id.et_enter_password)).addTextChangedListener(new TextWatcher() {
-                            @Override
-                            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                sb.setEnabled(count != 0);
-                                String text;
-                                if (count != 0) {
-                                    text = MessageFormat.format("{0} {1}",
-                                            cda.getString(R.string.remember_for),
-                                            items[getPos(sb.getProgress())]);
-                                } else {
-                                    text = "";
-                                }
-                                tvInfo.setText(text);
-                            }
+                        ((EditText) dialog.findViewById(R.id.et_enter_password))
+                                .addTextChangedListener(new TextWatcher() {
+                                    @Override
+                                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                        dialog.getButton(DialogInterface.BUTTON_POSITIVE).setEnabled(count != 0);
+                                        //                                        sb.setEnabled(count != 0);
+                                        String text;
+                                        if (count != 0) {
+                                            text = MessageFormat.format("{0} {1}",
+                                                    cda.getString(R.string.remember_for),
+                                                    items[getPos(sb.getProgress())]);
+                                        } else {
+                                            text = "";
+                                        }
+                                        tvInfo.setText(text);
+                                    }
 
-                            @Override
-                            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+                                    @Override
+                                    public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
-                            @Override
-                            public void afterTextChanged(Editable s) { }
-                        });
+                                    @Override
+                                    public void afterTextChanged(Editable s) { }
+                                });
                     }
                 })
                 .show();

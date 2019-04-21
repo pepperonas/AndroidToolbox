@@ -127,13 +127,14 @@ public class ClipboardDialogActivity extends AppCompatActivity {
 
             private void removeClip(RecyclerView rv, int[] reverseSortedPositions) {
                 for (int pos : reverseSortedPositions) {
-                    mDb.deleteClipData(mClips.get(pos).getContent());
+                    mDb.deleteClipData(mClips.get(pos).getTimestamp());
                     mClips.remove(pos);
                     Objects.requireNonNull(rv.getAdapter()).notifyDataSetChanged();
                     onUpdateTvHeader();
 
                     if (mClips.size() == 0) {
-                        Drawable d = new IconicsDrawable(ClipboardDialogActivity.this, CommunityMaterial.Icon.cmd_check)
+                        Drawable d = new IconicsDrawable(ClipboardDialogActivity.this,
+                                CommunityMaterial.Icon.cmd_check)
                                 .colorRes(R.color.sa_teal).sizeDp(64);
                         mIvEasterEgg.setVisibility(View.VISIBLE);
                         mIvEasterEgg.setImageDrawable(d);
@@ -178,13 +179,12 @@ public class ClipboardDialogActivity extends AppCompatActivity {
 
         boolean isEncryptionActive = !AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals("");
         if (isEncryptionActive) {
-
             ibtnLock.setVisibility(View.VISIBLE);
             // TODO: lock when unlocked
             if (AesPrefs.getLongRes(R.string.LOGOUT_TIME, 0) < System.currentTimeMillis()) {
-
                 Drawable d = new IconicsDrawable(ClipboardDialogActivity.this,
-                        CommunityMaterial.Icon.cmd_lock_open_outline).colorRes(R.color.stock_android_white).sizeDp(24);
+                        CommunityMaterial.Icon.cmd_lock_open_outline)
+                        .colorRes(R.color.stock_android_white).sizeDp(24);
                 ibtnLock.setImageDrawable(d);
                 ibtnLock.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -206,7 +206,6 @@ public class ClipboardDialogActivity extends AppCompatActivity {
                         ToastUtils.toastShort(getString(R.string.clipboard_locked));
                         setData();
                         Objects.requireNonNull(mRecyclerView.getAdapter()).notifyDataSetChanged();
-
                         if (!mCalledEnsureLockButton) {
                             mCalledEnsureLockButton = true;
                             ensureInitLockButton();

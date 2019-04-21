@@ -17,14 +17,15 @@
 package io.celox.android_toolbox.adapters;
 
 import android.app.Activity;
-import androidx.core.content.ContextCompat;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.cardview.widget.CardView;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.andbasx.base.ClipboardUtils;
@@ -83,7 +84,7 @@ public class ClipDataAdvancedAdapter extends
             public void onClick(View v) {
                 if (AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals("")
                         || AesPrefs.getLongRes(R.string.LOGOUT_TIME, 0) > System.currentTimeMillis()) {
-                    mDb.deleteClipData(mClips.get(holder.getAdapterPosition()).getContent());
+                    mDb.deleteClipData(mClips.get(holder.getAdapterPosition()).getTimestamp());
                     ClipboardUtils.setClipboard(mClips.get(holder.getAdapterPosition()).getContent());
                     ToastUtils.toastShort(mActivity.getString(R.string.copied_to_clipboard));
                     mActivity.finish();
