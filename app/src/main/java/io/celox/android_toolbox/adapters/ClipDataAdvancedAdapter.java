@@ -76,6 +76,9 @@ public class ClipDataAdvancedAdapter extends
 
     @Override
     public void onBindViewHolder(@NotNull final ClipDataAdvancedViewHolder holder, final int pos) {
+        final boolean unlocked = AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals("")
+                || AesPrefs.getLongRes(R.string.LOGOUT_TIME, 0) > System.currentTimeMillis();
+
         Drawable d = getDrawableByType(mClips.get(holder.getAdapterPosition()).getType());
         holder.icon.setImageDrawable(d);
 
@@ -85,11 +88,20 @@ public class ClipDataAdvancedAdapter extends
         holder.tvTsDate.setText(mClips.get(holder.getAdapterPosition()).getCreationDate());
         holder.tvTsTime.setText(mClips.get(holder.getAdapterPosition()).getCreationTime());
 
+        Typeface typeface;
+        if (unlocked) {
+            typeface = Typeface.DEFAULT;
+        } else {
+            typeface = Typeface.createFromAsset(mActivity.getAssets(), "fonts/monaco.ttf");
+        }
+        holder.tvClipDataText.setTypeface(typeface);
+        holder.tvTsDate.setTypeface(typeface);
+        holder.tvTsTime.setTypeface(typeface);
+
         holder.cv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals("")
-                        || AesPrefs.getLongRes(R.string.LOGOUT_TIME, 0) > System.currentTimeMillis()) {
+                if (unlocked) {
                     mDb.deleteClipData(mClips.get(holder.getAdapterPosition()).getTimestamp());
                     ClipboardUtils.setClipboard(mClips.get(holder.getAdapterPosition()).getContent());
                     ToastUtils.toastShort(mActivity.getString(R.string.copied_to_clipboard));
@@ -102,6 +114,12 @@ public class ClipDataAdvancedAdapter extends
     }
 
     private Drawable getDrawableByType(ClipDataAdvanced.Type type) {
+        if (!(AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals("")
+                || AesPrefs.getLongRes(R.string.LOGOUT_TIME, 0) > System.currentTimeMillis())) {
+            return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_help)
+                    .colorRes(R.color.clip_type_icon)
+                    .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+        }
         switch (type) {
             case URL:
                 return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_link)
@@ -128,15 +146,11 @@ public class ClipDataAdvancedAdapter extends
 
         public ClipDataAdvancedViewHolder(View itemView) {
             super(itemView);
-            Typeface typeface = Typeface.createFromAsset(itemView.getContext().getAssets(), "fonts/monaco.ttf");
             cv = itemView.findViewById(R.id.clip_data_card_container);
             icon = itemView.findViewById(R.id.iv_clip_data_card_icon);
             tvClipDataText = itemView.findViewById(R.id.tv_card_clip_data_text);
             tvTsDate = itemView.findViewById(R.id.tv_clip_data_created_date);
             tvTsTime = itemView.findViewById(R.id.tv_clip_data_created_time);
-            tvClipDataText.setTypeface(typeface);
-            tvTsDate.setTypeface(typeface);
-            tvTsTime.setTypeface(typeface);
         }
     }
 }
