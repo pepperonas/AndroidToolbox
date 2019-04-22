@@ -48,9 +48,6 @@ public class MainActivity extends AppCompatActivity {
         if (getResources().getBoolean(R.bool.wipe_database)) {
             wipeDatabase();
         }
-
-        //        AesPrefs.putLongRes(R.string.MAX_RX, 0L);
-        //        AesPrefs.putLongRes(R.string.MAX_TX, 0L);
     }
 
     private void wipeDatabase() {

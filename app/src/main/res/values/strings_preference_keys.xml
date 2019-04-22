@@ -16,4 +16,5 @@
 
 <resources>
     <string name="CBX_ENCRYPT_CLIPBOARD">cbx_encrypt_clipboard</string>
+    <string name="P_RESET_MAX_VALUES">reset_max_values</string>
 </resources>

@@ -77,5 +77,7 @@
     <string name="fifteen_minutes">15 Minutes</string>
     <string name="thirty_minutes">30 Minutes</string>
     <string name="sixty_minutes">60 Minutes</string>
+    <string name="more">More</string>
+    <string name="reset_max_values">Reset max values</string>
 
 </resources>

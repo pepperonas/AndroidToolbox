@@ -26,6 +26,8 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import com.pepperonas.aespreferences.AesPrefs;
 
+import java.util.Objects;
+
 import io.celox.android_toolbox.dialogs.DialogDecryptDatabase;
 import io.celox.android_toolbox.dialogs.DialogSetPassword;
 import io.celox.android_toolbox.utils.Database;
@@ -61,6 +63,9 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
 
+            Objects.requireNonNull(findPreference(getString(R.string.P_RESET_MAX_VALUES)))
+                    .setOnPreferenceClickListener(this);
+
             CheckBoxPreference cbxP = findPreference(getString(R.string.CBX_ENCRYPT_CLIPBOARD));
             if (cbxP != null) {
                 cbxP.setChecked(!AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals(""));
@@ -74,6 +79,9 @@ public class SettingsActivity extends AppCompatActivity {
                 CheckBoxPreference cbxP = findPreference(getString(R.string.CBX_ENCRYPT_CLIPBOARD));
                 onClickEncryptDatabase(cbxP);
                 return true;
+            } else if (preference.getKey().equals(getString(R.string.P_RESET_MAX_VALUES))) {
+                AesPrefs.putLongRes(R.string.MAX_RX, 0L);
+                AesPrefs.putLongRes(R.string.MAX_TX, 0L);
             }
             return false;
         }

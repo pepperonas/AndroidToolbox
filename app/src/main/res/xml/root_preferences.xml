@@ -25,5 +25,12 @@
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="@string/more">
+
+        <Preference
+            android:key="@string/P_RESET_MAX_VALUES"
+            android:title="@string/reset_max_values" />
+
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
