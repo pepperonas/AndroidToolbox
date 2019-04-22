@@ -17,6 +17,7 @@
 package io.celox.android_toolbox.adapters;
 
 import android.app.Activity;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,8 +75,8 @@ public class ClipDataAdvancedAdapter extends
     public void onBindViewHolder(@NotNull final ClipDataAdvancedViewHolder holder, final int pos) {
         holder.icon.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_launcher));
 
-        holder.ivClipDataText.setTextSize(mClips.get(holder.getAdapterPosition()).getSizedText().getTextSize());
-        holder.ivClipDataText.setText(mClips.get(holder.getAdapterPosition()).getSizedText().getText());
+        holder.tvClipDataText.setTextSize(mClips.get(holder.getAdapterPosition()).getSizedText().getTextSize());
+        holder.tvClipDataText.setText(mClips.get(holder.getAdapterPosition()).getSizedText().getText());
 
         holder.tvTsDate.setText(mClips.get(holder.getAdapterPosition()).getCreationDate());
         holder.tvTsTime.setText(mClips.get(holder.getAdapterPosition()).getCreationTime());
@@ -100,17 +101,21 @@ public class ClipDataAdvancedAdapter extends
 
         private CardView cv;
         private ImageView icon;
-        private TextView ivClipDataText;
+        private TextView tvClipDataText;
         private TextView tvTsDate;
         private TextView tvTsTime;
 
         public ClipDataAdvancedViewHolder(View itemView) {
             super(itemView);
+            Typeface typeface = Typeface.createFromAsset(itemView.getContext().getAssets(), "fonts/monaco.ttf");
             cv = itemView.findViewById(R.id.clip_data_card_container);
             icon = itemView.findViewById(R.id.iv_clip_data_card_icon);
-            ivClipDataText = itemView.findViewById(R.id.tv_card_clip_data_text);
+            tvClipDataText = itemView.findViewById(R.id.tv_card_clip_data_text);
             tvTsDate = itemView.findViewById(R.id.tv_clip_data_created_date);
             tvTsTime = itemView.findViewById(R.id.tv_clip_data_created_time);
+            tvClipDataText.setTypeface(typeface);
+            tvTsDate.setTypeface(typeface);
+            tvTsTime.setTypeface(typeface);
         }
     }
 }

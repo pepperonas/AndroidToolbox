@@ -42,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
         toolbar.bringToFront();
 
         Intent serviceIntent = new Intent(this, MainService.class);
-        startService(serviceIntent);
+//        ContextCompat.startForegroundService(this, serviceIntent);
+                startService(serviceIntent);
 
         if (getResources().getBoolean(R.bool.wipe_database)) {
             wipeDatabase();

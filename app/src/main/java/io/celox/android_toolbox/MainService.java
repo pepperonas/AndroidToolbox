@@ -62,8 +62,6 @@ public class MainService extends Service {
     private long mTmpLastRxMobile;
     private long mTmpLastTxMobile;
 
-    private String mClipboardContent = "";
-
     private Database mDb;
 
     private Handler mHandler = new Handler();
@@ -232,20 +230,18 @@ public class MainService extends Service {
             }
             try {
                 ClipboardManager clipboardManager = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-                ClipData cd = null;
                 if (clipboardManager != null) {
-                    cd = clipboardManager.getPrimaryClip();
-                }
-                ClipData.Item item;
-                if (cd != null) {
-                    item = cd.getItemAt(0);
-                    if ((System.currentTimeMillis() - mLastAddedClip) > DELTA_TIME_MS) {
-                        // TODO: 2019-04-20 add types
-                        ClipDataAdvanced.Type type = ClipDataAdvanced.Type.DEFAULT;
-                        mClipboardContent = item.getText().toString();
-                        Log.d(TAG, "onPrimaryClipChanged " + mClipboardContent);
-                        mLastAddedClip = System.currentTimeMillis();
-                        mDb.insertClipboardText(type, mClipboardContent, System.currentTimeMillis());
+                    ClipData cd = clipboardManager.getPrimaryClip();
+                    if (cd != null) {
+                        ClipData.Item item = cd.getItemAt(0);
+                        if ((System.currentTimeMillis() - mLastAddedClip) > DELTA_TIME_MS) {
+                            // TODO: 2019-04-20 add types
+                            ClipDataAdvanced.Type type = ClipDataAdvanced.Type.DEFAULT;
+                            String clipboardContent = item.getText().toString();
+                            Log.d(TAG, "onPrimaryClipChanged " + clipboardContent);
+                            mLastAddedClip = System.currentTimeMillis();
+                            mDb.insertClipboardText(type, clipboardContent, System.currentTimeMillis());
+                        }
                     }
                 }
             } catch (Exception e) {

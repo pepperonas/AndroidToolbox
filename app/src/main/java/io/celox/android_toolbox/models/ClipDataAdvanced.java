@@ -70,7 +70,6 @@ public class ClipDataAdvanced {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM", DeviceUtils.getLocale());
         String tmp = dateFormat.format(timestamp);
         return tmp.split("</>")[0];
-
     }
 
     public String getCreationTime() {
@@ -128,17 +127,20 @@ public class ClipDataAdvanced {
         String tmpText = content;
 
         if (tmpText.contains("\n")) {
-            sizedText.setTextSize(12f);
-            tmpText = tmpText.replace("\n", "</>");
+            tmpText = tmpText.replace("\n", " ⏎ ");
         }
 
         if (tmpText.length() > 20) {
+            sizedText.setTextSize(14f);
+        }
+
+        if (tmpText.length() > 60) {
             sizedText.setTextSize(12f);
         }
 
-        if (tmpText.length() > 30) {
-            sizedText.setTextSize(12f);
-            tmpText = tmpText.substring(0, 29) + "...";
+        if (tmpText.length() > 100) {
+            sizedText.setTextSize(10f);
+            tmpText = tmpText.substring(0, 100) + "…";
         }
 
         sizedText.setText(tmpText);
