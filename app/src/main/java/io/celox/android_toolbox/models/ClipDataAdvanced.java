@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 public class ClipDataAdvanced {
 
     public enum Type {
-        DEFAULT
+        DEFAULT, URL, GOOGLE_DRIVE
     }
 
     private long timestamp;

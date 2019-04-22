@@ -31,8 +31,11 @@ import java.util.Objects;
 import io.celox.android_toolbox.dialogs.DialogDecryptDatabase;
 import io.celox.android_toolbox.dialogs.DialogSetPassword;
 import io.celox.android_toolbox.utils.Database;
+import io.celox.android_toolbox.utils.Utils;
 
 public class SettingsActivity extends AppCompatActivity {
+
+    private static final String TAG = "SettingsActivity";
 
     private Database mDb;
 
@@ -58,7 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     public static class SettingsFragment extends PreferenceFragmentCompat implements
-            Preference.OnPreferenceClickListener {
+            Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
@@ -66,11 +69,30 @@ public class SettingsActivity extends AppCompatActivity {
             Objects.requireNonNull(findPreference(getString(R.string.P_RESET_MAX_VALUES)))
                     .setOnPreferenceClickListener(this);
 
-            CheckBoxPreference cbxP = findPreference(getString(R.string.CBX_ENCRYPT_CLIPBOARD));
+            CheckBoxPreference cbxP = findPreference(getString(R.string.CBX_CLIPBOARD_ENABLED));
+            if (cbxP != null) {
+                cbxP.setChecked(AesPrefs.getBooleanRes(R.string.CLIPBOARD_ENABLED, true));
+                cbxP.setOnPreferenceChangeListener(this);
+            }
+
+            cbxP = findPreference(getString(R.string.CBX_ENCRYPT_CLIPBOARD));
             if (cbxP != null) {
                 cbxP.setChecked(!AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, "").equals(""));
                 cbxP.setOnPreferenceClickListener(this);
             }
+
+            Preference p = findPreference(getString(R.string.P_BUILD_VERSION));
+            String buildVersion = Utils.getBuildVersion();
+            p.setSummary(buildVersion);
+        }
+
+        @Override
+        public boolean onPreferenceChange(Preference preference, Object newValue) {
+            if (preference.getKey().equals(getString(R.string.CBX_CLIPBOARD_ENABLED))) {
+                AesPrefs.putBooleanRes(R.string.CLIPBOARD_ENABLED, (Boolean) newValue);
+                return true;
+            }
+            return false;
         }
 
         @Override

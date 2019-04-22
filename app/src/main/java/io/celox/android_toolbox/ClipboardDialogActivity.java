@@ -243,17 +243,17 @@ public class ClipboardDialogActivity extends AppCompatActivity {
     private void onUpdateTvHeader() {
         int clipDataCount = mDb.getClipDataCount();
         if (clipDataCount == 0) {
-            mTvHeader.setText(MessageFormat.format("{0} - {1}",
+            mTvHeader.setText(MessageFormat.format("{0} | {1}",
                     getString(R.string.dialog_clipboard_header), getString(R.string.no_entries)));
             return;
         }
         if (clipDataCount == 1) {
-            mTvHeader.setText(MessageFormat.format("{0} - {1}",
+            mTvHeader.setText(MessageFormat.format("{0} | {1}",
                     getString(R.string.dialog_clipboard_header), getString(R.string.one_entry)));
             return;
         }
 
-        mTvHeader.setText(MessageFormat.format("{0} - {1} {2}",
+        mTvHeader.setText(MessageFormat.format("{0} | {1} {2}",
                 getString(R.string.dialog_clipboard_header), clipDataCount, getString(R.string.entries)));
     }
 

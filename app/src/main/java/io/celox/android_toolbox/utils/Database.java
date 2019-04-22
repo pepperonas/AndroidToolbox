@@ -128,12 +128,7 @@ public class Database extends SQLiteOpenHelper {
             Log.i(TAG, "getClipData: will get unencrypted data...");
             c.moveToPosition(-1);
             while (c.moveToNext()) {
-                ClipDataAdvanced.Type type;
-                if (c.getInt(2) == 0) {
-                    type = ClipDataAdvanced.Type.DEFAULT;
-                } else {
-                    type = ClipDataAdvanced.Type.DEFAULT;
-                }
+                ClipDataAdvanced.Type type = ClipDataAdvanced.Type.values()[c.getInt(2)];
                 results.add(new ClipDataAdvanced(c.getLong(1), type, c.getString(3), c.getLong(4)));
             }
             c.close();
@@ -143,12 +138,7 @@ public class Database extends SQLiteOpenHelper {
             c.moveToPosition(-1);
             while (c.moveToNext()) {
                 try {
-                    ClipDataAdvanced.Type type;
-                    if (c.getInt(2) == 0) {
-                        type = ClipDataAdvanced.Type.DEFAULT;
-                    } else {
-                        type = ClipDataAdvanced.Type.DEFAULT;
-                    }
+                    ClipDataAdvanced.Type type = ClipDataAdvanced.Type.values()[c.getInt(2)];
                     results.add(new ClipDataAdvanced(c.getLong(1), type,
                             Crypt.decrypt(AesPrefs.getRes(R.string.ENCRYPTION_PASSWORD, ""),
                                     c.getString(3), c.getLong(4)), c.getLong(4)));

@@ -20,6 +20,11 @@
     <PreferenceCategory app:title="@string/clipboard">
 
         <CheckBoxPreference
+            android:key="@string/CBX_CLIPBOARD_ENABLED"
+            android:title="@string/manage_clipboard" />
+
+        <CheckBoxPreference
+            android:dependency="@string/CBX_CLIPBOARD_ENABLED"
             android:key="@string/CBX_ENCRYPT_CLIPBOARD"
             android:title="@string/encrypt_clipboard" />
 
@@ -32,5 +37,9 @@
             android:title="@string/reset_max_values" />
 
     </PreferenceCategory>
+
+    <Preference
+        android:key="@string/P_BUILD_VERSION"
+        android:title="@string/pref_title_build_version" />
 
 </androidx.preference.PreferenceScreen>

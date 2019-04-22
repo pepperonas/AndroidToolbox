@@ -18,19 +18,18 @@ package io.celox.android_toolbox;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import io.celox.android_toolbox.dialogs.DialogAbout;
 import io.celox.android_toolbox.utils.Database;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = "MainActivity";
-    private Database mDb;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,17 +41,11 @@ public class MainActivity extends AppCompatActivity {
         toolbar.bringToFront();
 
         Intent serviceIntent = new Intent(this, MainService.class);
-        //        ContextCompat.startForegroundService(this, serviceIntent);
         startService(serviceIntent);
 
         if (getResources().getBoolean(R.bool.wipe_database)) {
-            wipeDatabase();
+            new Database(this).wipe();
         }
-    }
-
-    private void wipeDatabase() {
-        mDb = new Database(this);
-        mDb.wipe();
     }
 
     @Override
@@ -62,33 +55,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (mDb != null) {
-            mDb.close();
-        }
-
         super.onDestroy();
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d(TAG, "onCreateOptionsMenu: ");
-
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onMenuOpened(int featureId, Menu menu) {
-        Log.d(TAG, "onMenuOpened: ");
-
         return super.onMenuOpened(featureId, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d(TAG, "onOptionsItemSelected: ");
-
         switch (item.getItemId()) {
+            case R.id.action_about:
+                new DialogAbout(this);
+                return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;

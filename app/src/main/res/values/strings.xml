@@ -47,6 +47,7 @@
     <string name="no_entries">Empty</string>
     <string name="one_entry">1 entry</string>
     <string name="entries">entries</string>
+    <string name="about">About</string>
     <string name="settings">Settings</string>
     <string name="title_activity_settings">Settings</string>
 
@@ -64,7 +65,6 @@
     <string name="attachment_summary_on">Automatically download attachments for incoming emails
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
-    <string name="encrypt_clipboard">Encrypt Clipboard</string>
     <string name="clipboard">Clipboard</string>
     <string name="password_saved">Password saved</string>
     <string name="clipboard_decrypted">Clipboard decrypted</string>
@@ -78,6 +78,26 @@
     <string name="thirty_minutes">30 Minutes</string>
     <string name="sixty_minutes">60 Minutes</string>
     <string name="more">More</string>
+    <string name="encrypt_clipboard">Encrypt clipboard</string>
     <string name="reset_max_values">Reset max values</string>
+    <string name="manage_clipboard">Manage clipboard</string>
+
+    <string name="web_presentation_info" translatable="false">
+    <![CDATA[
+    Developed by <b>Martin Pfeffer</b>
+    <br>
+    &#169; 2015 - 2019.
+    <br><br>
+    <font color="#009688"><a href="https://celox.io">Website</a></font>&nbsp;&nbsp;
+    <font color="#009688"><a href="https://play.google.com/store/apps/dev?id=8486269375445922130">Google Play</a></font>&nbsp;&nbsp;
+    <br><br>
+    <font color="#009688"><a href="https://plus.google.com/communities/100642582416636996643">Google+</a></font>&nbsp;&nbsp;
+    <font color="#009688"><a href="https://github.com/pepperonas">GitHub</a></font>&nbsp;&nbsp;
+    ]]></string>
+    <string name="dialog_android_id_title">Unlock request</string>
+    <string name="dialog_android_id_msg">Touch the ID and send it to martin.pfeffer@celox.io.</string>
+
+    <string name="pref_title_build_version" translatable="false">Build Version</string>
+    <string name="pref_title_changelog" translatable="false">Changelog</string>
 
 </resources>

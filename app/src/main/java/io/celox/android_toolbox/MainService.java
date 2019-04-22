@@ -246,10 +246,6 @@ public class MainService extends Service {
 
     class ClipboardListener implements ClipboardManager.OnPrimaryClipChangedListener {
 
-        private static final long DELTA_TIME_MS = 1000;
-
-        private long mLastAddedClip = 0;
-
         public void onPrimaryClipChanged() {
             if (!AesPrefs.getBooleanRes(R.string.CLIPBOARD_ENABLED, true)) {
                 return;
@@ -260,19 +256,29 @@ public class MainService extends Service {
                     ClipData cd = clipboardManager.getPrimaryClip();
                     if (cd != null) {
                         ClipData.Item item = cd.getItemAt(0);
-                        if ((System.currentTimeMillis() - mLastAddedClip) > DELTA_TIME_MS) {
-                            // TODO: 2019-04-20 add types
-                            ClipDataAdvanced.Type type = ClipDataAdvanced.Type.DEFAULT;
-                            String clipboardContent = item.getText().toString();
-                            Log.d(TAG, "onPrimaryClipChanged " + clipboardContent);
-                            mLastAddedClip = System.currentTimeMillis();
-                            mDb.insertClipboardText(type, clipboardContent, System.currentTimeMillis());
-                        }
+                        String content = item.getText().toString();
+                        ClipDataAdvanced.Type type = getTypeByContent(content);
+
+                        Log.d(TAG, "onPrimaryClipChanged content=" + content + " type=" + type.name());
+
+                        mDb.insertClipboardText(type, content, System.currentTimeMillis());
                     }
                 }
             } catch (Exception e) {
                 Log.d(TAG, "onPrimaryClipChanged Error while getting clip-data");
             }
+        }
+
+        private ClipDataAdvanced.Type getTypeByContent(String content) {
+            // TODO: 2019-04-22 add types
+            // most specific on top
+            if (content.toLowerCase().contains("google") && content.toLowerCase().contains("drive")) {
+                return ClipDataAdvanced.Type.GOOGLE_DRIVE;
+            }
+            if (content.contains("http")) {
+                return ClipDataAdvanced.Type.URL;
+            }
+            return ClipDataAdvanced.Type.DEFAULT;
         }
     }
 }

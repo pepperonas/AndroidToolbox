@@ -54,6 +54,8 @@
     <color name="sa_accent">#85D3CC</color>
     <color name="sa_bg">#FFFFFF</color>
 
+    <!--<color name="clip_type_icon">@color/sa_accent</color>-->
+    <color name="clip_type_icon">@color/grey_700</color>
 
     <color name="sa_teal_dark">#384248</color>
     <color name="sa_teal">#009688</color>

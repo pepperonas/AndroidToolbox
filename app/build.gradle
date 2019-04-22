@@ -56,7 +56,7 @@ static def formatVersionCode(int versionCode) {
     return "-1"
 }
 
-def version_code = 6
+def version_code = 7
 def version_name = formatVersionCode(version_code)
 
 android {

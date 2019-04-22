@@ -16,12 +16,20 @@
 
 package io.celox.android_toolbox.utils;
 
+import android.content.Context;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.concurrent.Callable;
+
+import io.celox.android_toolbox.BuildConfig;
 
 /**
  * @author Martin Pfeffer
@@ -106,6 +114,24 @@ public class Utils {
                     }
                 }
             });
+        }
+    }
+
+    public static String getBuildVersion() {
+        String summary = BuildConfig.VERSION_NAME;
+        Date date = new Date(BuildConfig.APP_CREATED);
+        SimpleDateFormat sdf = new SimpleDateFormat("yy.MM.dd.HH.mm.ss", Locale.getDefault());
+        return summary + "-" + sdf.format(date);
+    }
+
+    public static int getVersionCode(Context context) {
+        PackageInfo pInfo;
+        try {
+            pInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return pInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return -1;
         }
     }
 }

@@ -18,6 +18,7 @@ package io.celox.android_toolbox.adapters;
 
 import android.app.Activity;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +26,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mikepenz.community_material_typeface_library.CommunityMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
 import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.andbasx.base.ClipboardUtils;
 import com.pepperonas.andbasx.base.ToastUtils;
@@ -38,6 +40,7 @@ import java.util.List;
 
 import io.celox.android_toolbox.R;
 import io.celox.android_toolbox.models.ClipDataAdvanced;
+import io.celox.android_toolbox.utils.Const;
 import io.celox.android_toolbox.utils.Database;
 
 /**
@@ -73,7 +76,8 @@ public class ClipDataAdvancedAdapter extends
 
     @Override
     public void onBindViewHolder(@NotNull final ClipDataAdvancedViewHolder holder, final int pos) {
-        holder.icon.setImageDrawable(ContextCompat.getDrawable(mActivity, R.drawable.ic_launcher));
+        Drawable d = getDrawableByType(mClips.get(holder.getAdapterPosition()).getType());
+        holder.icon.setImageDrawable(d);
 
         holder.tvClipDataText.setTextSize(mClips.get(holder.getAdapterPosition()).getSizedText().getTextSize());
         holder.tvClipDataText.setText(mClips.get(holder.getAdapterPosition()).getSizedText().getText());
@@ -95,6 +99,23 @@ public class ClipDataAdvancedAdapter extends
                 }
             }
         });
+    }
+
+    private Drawable getDrawableByType(ClipDataAdvanced.Type type) {
+        switch (type) {
+            case URL:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_link)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case GOOGLE_DRIVE:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_google_drive)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            default:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_message_text_outline)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+        }
     }
 
     public class ClipDataAdvancedViewHolder extends RecyclerView.ViewHolder {
