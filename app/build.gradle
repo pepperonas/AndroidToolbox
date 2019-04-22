@@ -56,9 +56,8 @@ static def formatVersionCode(int versionCode) {
     return "-1"
 }
 
-def version_code = 5
+def version_code = 6
 def version_name = formatVersionCode(version_code)
-//def version_name = "0.0.5"
 
 android {
     compileSdkVersion 28
