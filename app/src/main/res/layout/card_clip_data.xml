@@ -57,7 +57,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Small Text" />
+                android:text="Small Text"
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tv_clip_data_created_time"
@@ -65,7 +66,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
-                android:text="Small Text" />
+                android:text="Small Text"
+                android:textSize="12sp" />
 
         </LinearLayout>
 

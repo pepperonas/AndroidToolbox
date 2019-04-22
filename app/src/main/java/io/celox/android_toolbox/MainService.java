@@ -40,9 +40,6 @@ import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.jbasx.base.Si;
 
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import io.celox.android_toolbox.models.ClipDataAdvanced;
 import io.celox.android_toolbox.utils.Const;
@@ -61,6 +58,8 @@ public class MainService extends Service {
     private long mTmpLastTx;
     private long mTmpLastRxMobile;
     private long mTmpLastTxMobile;
+
+    private long mTsServiceStarted;
 
     private Database mDb;
 
@@ -84,6 +83,7 @@ public class MainService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        mTsServiceStarted = System.currentTimeMillis();
         mDb = new Database(this);
 
         String channelId = getString(R.string.channel_id_network_notification);
@@ -174,19 +174,19 @@ public class MainService extends Service {
 
         final long totalTraffic = (rx_ivl + tx_ivl);
 
-        int imageResourceId;
-        if (totalTraffic > Si.MEGA) {
-            float f = totalTraffic / (float) Si.MEGA;
-            String fStr = String.valueOf(f);
-            imageResourceId = resolveDrawableId("mbytes__" +
-                    fStr.split("\\.")[0] + "_" + fStr.split("\\.")[1].charAt(0));
-        } else if (totalTraffic != 0) {
-            imageResourceId = resolveDrawableId("kbytes_" + totalTraffic / (int) Si.KILO);
-        } else {
-            imageResourceId = resolveDrawableId("kbytes_" + 0);
-        }
-
+        int imageResourceId = 0;
         try {
+            if (totalTraffic > Si.MEGA) {
+                float f = totalTraffic / (float) Si.MEGA;
+                String fStr = String.valueOf(f);
+                imageResourceId = resolveDrawableId("mbytes__" +
+                        fStr.split("\\.")[0] + "_" + fStr.split("\\.")[1].charAt(0));
+            } else if (totalTraffic != 0) {
+                imageResourceId = resolveDrawableId("kbytes_" + totalTraffic / (int) Si.KILO);
+            } else {
+                imageResourceId = resolveDrawableId("kbytes_" + 0);
+            }
+            // not found...
             if (imageResourceId == 0) {
                 imageResourceId = resolveDrawableId("kbytes_" + 0);
             }
@@ -194,15 +194,41 @@ public class MainService extends Service {
             e.printStackTrace();
         }
 
-        final Date date = new Date(System.currentTimeMillis());
-        final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss", Locale.getDefault());
+        String maxRx;
+        String maxTx;
+
+        if ((mTsServiceStarted + 3000) < System.currentTimeMillis()) {
+            if (AesPrefs.getLongRes(R.string.MAX_RX, 0L) < rx_ivl) {
+                AesPrefs.putLongRes(R.string.MAX_RX, rx_ivl);
+            }
+            if (AesPrefs.getLongRes(R.string.MAX_TX, 0L) < tx_ivl) {
+                AesPrefs.putLongRes(R.string.MAX_TX, tx_ivl);
+            }
+        }
+
+        if (AesPrefs.getLongRes(R.string.MAX_RX, 0L) > Si.MEGA) {
+            float f = (float) AesPrefs.getLongRes(R.string.MAX_RX, 0L) / (float) Si.MEGA;
+            maxRx = df.format(f) + " " + getString(R.string._unit_megabytes_per_second);
+        } else {
+            maxRx = AesPrefs.getLongRes(R.string.MAX_RX, 0L) / 1024 + " " + getString(R.string._unit_kilobytes_per_second);
+        }
+        if (AesPrefs.getLongRes(R.string.MAX_TX, 0L) > Si.MEGA) {
+            float f = (float) AesPrefs.getLongRes(R.string.MAX_TX, 0L) / (float) Si.MEGA;
+            maxTx = df.format(f) + " " + getString(R.string._unit_megabytes_per_second);
+        } else {
+            maxTx = AesPrefs.getLongRes(R.string.MAX_TX, 0L) / 1024 + " " + getString(R.string._unit_kilobytes_per_second);
+        }
+
         final int finalImageResourceId = imageResourceId;
+        final String finalMaxRx = maxRx;
+        final String finalMaxTx = maxTx;
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
                 mNotificationBuilder.setSmallIcon(finalImageResourceId);
                 mNotificationBuilder.setContentTitle(down + "  |  " + up);
-                mNotificationBuilder.setContentText(sdf.format(date) + " Clips: " + mDb.getClipDataCount());
+                mNotificationBuilder.setContentText("Max: " + finalMaxRx + " | " + finalMaxTx
+                        + "\tClips: " + mDb.getClipDataCount());
                 mNotificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
             }
         }, 1000);

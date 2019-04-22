@@ -42,12 +42,15 @@ public class MainActivity extends AppCompatActivity {
         toolbar.bringToFront();
 
         Intent serviceIntent = new Intent(this, MainService.class);
-//        ContextCompat.startForegroundService(this, serviceIntent);
-                startService(serviceIntent);
+        //        ContextCompat.startForegroundService(this, serviceIntent);
+        startService(serviceIntent);
 
         if (getResources().getBoolean(R.bool.wipe_database)) {
             wipeDatabase();
         }
+
+        //        AesPrefs.putLongRes(R.string.MAX_RX, 0L);
+        //        AesPrefs.putLongRes(R.string.MAX_TX, 0L);
     }
 
     private void wipeDatabase() {

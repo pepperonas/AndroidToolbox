@@ -19,4 +19,6 @@
     <string name="CLIPBOARD_ENABLED">CLIPBOARD_ENABLED</string>
     <string name="ENCRYPTION_PASSWORD">ENCRYPTION_PASSWORD</string>
     <string name="LAST_PROGRESS_LOCK_TIME">LAST_PROGRESS_LOCK_TIME</string>
+    <string name="MAX_RX">MAX_RX</string>
+    <string name="MAX_TX">MAX_TX</string>
 </resources>

@@ -24,8 +24,6 @@ import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
 import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.andbasx.base.ToastUtils;
 import com.pepperonas.jbasx.base.TextUtils;
@@ -46,9 +44,6 @@ public class DialogEnterPassword {
         new MaterialDialog.Builder(cda, R.style.AppTheme_Dialog_EnterPassword)
                 .title(cda.getString(R.string.enter_password))
                 .customView(R.layout.dialog_enter_password)
-                .icon(new IconicsDrawable(cda, CommunityMaterial.Icon.cmd_key_variant)
-                        .colorRes(R.color.dialog_icon)
-                        .sizeDp(cda.getResources().getInteger(R.integer.dialog_icon_size)))
                 .positiveText(cda.getString(R.string.ok))
                 .negativeText(cda.getString(R.string.cancel))
                 .buttonCallback(new MaterialDialog.ButtonCallback() {
