@@ -134,6 +134,8 @@ public class MainService extends Service {
 
         startForeground(NOTIFICATION_ID, notification);
 
+        mHandler.removeCallbacks(mRunnable);
+
         mHandler.post(mRunnable);
 
         return START_STICKY;
