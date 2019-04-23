@@ -99,5 +99,6 @@
 
     <string name="pref_title_build_version" translatable="false">Build Version</string>
     <string name="pref_title_changelog" translatable="false">Changelog</string>
+    <string name="permissions_missing">Permission missing</string>
 
 </resources>

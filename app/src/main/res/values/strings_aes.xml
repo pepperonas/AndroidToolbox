@@ -21,4 +21,5 @@
     <string name="LAST_PROGRESS_LOCK_TIME">LAST_PROGRESS_LOCK_TIME</string>
     <string name="MAX_RX">MAX_RX</string>
     <string name="MAX_TX">MAX_TX</string>
+    <string name="PERMISSIONS_GRANTED">PERMISSIONS_GRANTED</string>
 </resources>

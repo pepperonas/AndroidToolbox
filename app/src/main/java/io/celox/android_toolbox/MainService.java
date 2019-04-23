@@ -31,7 +31,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -44,7 +43,13 @@ import java.text.DecimalFormat;
 import io.celox.android_toolbox.models.ClipDataAdvanced;
 import io.celox.android_toolbox.utils.Const;
 import io.celox.android_toolbox.utils.Database;
+import io.celox.android_toolbox.utils.Log;
 
+/**
+ * @author Martin Pfeffer
+ * <a href="mailto:martin.pfeffer@celox.io">martin.pfeffer@celox.io</a>
+ * @see <a href="https://celox.io">https://celox.io</a>
+ */
 public class MainService extends Service {
 
     private static final String TAG = "MainService";
@@ -84,7 +89,7 @@ public class MainService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         mTsServiceStarted = System.currentTimeMillis();
-        mDb = new Database(this);
+        mDb = new Database(MainService.this);
 
         String channelId = getString(R.string.channel_id_network_notification);
         String channelName = getString(R.string.channel_name_network_notification);
@@ -102,7 +107,7 @@ public class MainService extends Service {
             clipboardManager.addPrimaryClipChangedListener(new ClipboardListener());
         }
 
-        mNotificationBuilder = new NotificationCompat.Builder(this, channelId);
+        mNotificationBuilder = new NotificationCompat.Builder(MainService.this, channelId);
         Notification notification = mNotificationBuilder
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.kbytes_0)
@@ -112,9 +117,9 @@ public class MainService extends Service {
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .build();
 
-        Intent notificationIntent = new Intent(this, ClipboardDialogActivity.class);
+        Intent notificationIntent = new Intent(MainService.this, ClipboardDialogActivity.class);
         notificationIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getActivity(MainService.this, 0, notificationIntent, 0);
         mNotificationBuilder.setContentIntent(pendingIntent);
 
         startForeground(NOTIFICATION_ID, notification);
@@ -225,11 +230,16 @@ public class MainService extends Service {
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
-                mNotificationBuilder.setSmallIcon(finalImageResourceId);
-                mNotificationBuilder.setContentTitle(down + "  |  " + up);
-                mNotificationBuilder.setContentText("Max: " + finalMaxRx + " | " + finalMaxTx
-                        + "\tClips: " + mDb.getClipDataCount());
-                mNotificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
+                if (mNotificationBuilder != null) {
+                    mNotificationBuilder.setSmallIcon(finalImageResourceId);
+                    mNotificationBuilder.setContentTitle(down + "  |  " + up);
+                    mNotificationBuilder.setContentText("Max: " + finalMaxRx + " | " + finalMaxTx
+                            + "\tClips: " + mDb.getClipDataCount());
+                    mNotificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
+                } else {
+                    String channelId = getString(R.string.channel_id_network_notification);
+                    mNotificationBuilder = new NotificationCompat.Builder(MainService.this, channelId);
+                }
             }
         }, 1000);
     }
@@ -259,13 +269,13 @@ public class MainService extends Service {
                         String content = item.getText().toString();
                         ClipDataAdvanced.Type type = getTypeByContent(content);
 
-                        Log.d(TAG, "onPrimaryClipChanged content=" + content + " type=" + type.name());
+                        Log.d(TAG, "onPrimaryClipChanged: content=" + content + " type=" + type.name());
 
                         mDb.insertClipboardText(type, content, System.currentTimeMillis());
                     }
                 }
             } catch (Exception e) {
-                Log.d(TAG, "onPrimaryClipChanged Error while getting clip-data");
+                Log.e(TAG, "onPrimaryClipChanged: Error while getting clip-data", e);
             }
         }
 

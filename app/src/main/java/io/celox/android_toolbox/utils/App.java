@@ -34,5 +34,6 @@ public class App extends Application {
 
         AndBasx.init(this);
         AesPrefs.init(this, "aes_config", "fSXwTkTKEH299YBcMKa6UeW", AesPrefs.LogMode.NONE);
+        Log.init(this);
     }
 }

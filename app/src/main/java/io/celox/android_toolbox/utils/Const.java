@@ -30,4 +30,6 @@ public class Const {
     public static final int DEFAULT_MAX_CLIPS_IN_RECYCLER = Integer.MAX_VALUE;
     public static final int NAV_DRAWER_ICON_SIZE = 24;
     public static final int DIALOG_ICON_SIZE = 18;
+    public static final String APP_DIR = "android-toolbox";
+    public static final String LOG_DIR = "log";
 }

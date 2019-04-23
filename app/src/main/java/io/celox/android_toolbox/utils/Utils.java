@@ -134,4 +134,15 @@ public class Utils {
             return -1;
         }
     }
+
+    /**
+     * Gets readable time stamp.
+     *
+     * @return the readable time stamp
+     */
+    public static String getReadableTimeStamp() {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd_HH-mm-ss", Locale.getDefault());
+        Date dt = new Date();
+        return sdf.format(dt);
+    }
 }
