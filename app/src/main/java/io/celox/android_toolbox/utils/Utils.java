@@ -145,4 +145,8 @@ public class Utils {
         Date dt = new Date();
         return sdf.format(dt);
     }
+
+    public static String formatTimePeriod(int seconds) {
+        return String.format("%02d:%02d:%02d", seconds / 3600, (seconds % 3600) / 60, (seconds % 60), Locale.getDefault());
+    }
 }

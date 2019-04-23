@@ -44,7 +44,7 @@ public class Log {
 
     private static long sStartTime;
 
-    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss", Locale.GERMAN);
+    private static SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm:ss", Locale.getDefault());
 
     /**
      * The constant printWriter.
@@ -88,9 +88,8 @@ public class Log {
         }
 
         try {
-            String delta = String.valueOf(System.currentTimeMillis() - sStartTime);
             printWriter.print("+");
-            printWriter.print(String.format("%-10s", delta));
+            printWriter.print(String.format("%-10s", Utils.formatTimePeriod((int) ((System.currentTimeMillis() - sStartTime) / 1000))));
             printWriter.print(String.format("%-25s", tag));
             printWriter.print(String.format("%-20s", sdf.format(new Date(System.currentTimeMillis()))));
             printWriter.print(msg + "\r\n");
