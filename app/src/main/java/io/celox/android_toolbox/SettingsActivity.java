@@ -77,7 +77,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             cbxP = findPreference(getString(R.string.CBX_REMOTE_VIEWS_ENABLED));
             if (cbxP != null) {
-                cbxP.setChecked(AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, true));
+                cbxP.setChecked(AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false));
                 cbxP.setOnPreferenceChangeListener(this);
             }
 

@@ -97,7 +97,7 @@ public class MainService extends Service {
         String channelName = getString(R.string.channel_name_network_notification);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, true)) {
+        if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false)) {
             // notification's layout
             mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_network);
             mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, "");
@@ -237,7 +237,7 @@ public class MainService extends Service {
         }
 
         if (mRemoteViews == null) {
-            if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, true)) {
+            if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false)) {
                 mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_network);
             }
         }
@@ -263,7 +263,7 @@ public class MainService extends Service {
                         sTotalTraffic = String.valueOf((int) totalTraffic / (int) Si.KILO);
                     }
 
-                    if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, true)) {
+                    if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false)) {
                         mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, sTotalTraffic);
                         mRemoteViews.setTextViewText(R.id.tv_notification_circle_values_unit, finalUnitTotal);
                         mRemoteViews.setTextViewText(R.id.tv_m_notification_center_top, down + "  |  " + up);
