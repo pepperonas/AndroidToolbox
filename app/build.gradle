@@ -36,9 +36,6 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 
-def version_code = 7
-def version_name = formatVersionCode(version_code)
-
 Properties props = new Properties()
 InputStream is = new FileInputStream("$project.rootDir/build.properties")
 props.load(is)
@@ -50,10 +47,13 @@ task printProps {
     }
 }
 
+def version_code = 8
+def version_name = formatVersionCode(version_code)
+
 task copyApkToGoogleDrive {
     copy {
         from '/Users/martin/AndroidStudioProjects/AndroidToolbox' +
-                '/app/build/outputs/apk/dev/debug/android-toolbox-0.0.7-dev-debug.apk'
+                '/app/build/outputs/apk/dev/debug/android-toolbox-0.0.8-dev-debug.apk'
         into "/Users/martin/Google Drive/public"
     }
 }
@@ -141,5 +141,4 @@ dependencies {
     implementation 'com.jjoe64:graphview:4.2.1'
     // preference fragment
     implementation 'com.github.machinarius:preferencefragment:0.1.1'
-
 }

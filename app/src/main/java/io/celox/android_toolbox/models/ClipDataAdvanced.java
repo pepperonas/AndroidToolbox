@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 public class ClipDataAdvanced {
 
     public enum Type {
-        DEFAULT, URL, GOOGLE_DRIVE
+        DEFAULT, URL, GOOGLE_DRIVE, DROPBOX, FACEBOOK, INSTAGRAM, AMAZON, GOOGLE_PLAY, XING, YOUTUBE, SPOTIFY
     }
 
     private long timestamp;

@@ -129,6 +129,38 @@ public class ClipDataAdvancedAdapter extends
                 return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_google_drive)
                         .colorRes(R.color.clip_type_icon)
                         .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case DROPBOX:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_dropbox)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case FACEBOOK:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_facebook)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case INSTAGRAM:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_instagram)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case AMAZON:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_amazon)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case GOOGLE_PLAY:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_google_play)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case XING:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_xing)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case YOUTUBE:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_youtube_play)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
+            case SPOTIFY:
+                return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_spotify)
+                        .colorRes(R.color.clip_type_icon)
+                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE);
             default:
                 return new IconicsDrawable(mActivity, CommunityMaterial.Icon.cmd_message_text_outline)
                         .colorRes(R.color.clip_type_icon)

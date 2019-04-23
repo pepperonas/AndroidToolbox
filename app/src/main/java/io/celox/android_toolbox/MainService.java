@@ -285,6 +285,30 @@ public class MainService extends Service {
             if (content.toLowerCase().contains("google") && content.toLowerCase().contains("drive")) {
                 return ClipDataAdvanced.Type.GOOGLE_DRIVE;
             }
+            if (content.toLowerCase().contains("dropbox")) {
+                return ClipDataAdvanced.Type.DROPBOX;
+            }
+            if (content.toLowerCase().contains("facebook")) {
+                return ClipDataAdvanced.Type.FACEBOOK;
+            }
+            if (content.toLowerCase().contains("instagram")) {
+                return ClipDataAdvanced.Type.INSTAGRAM;
+            }
+            if (content.toLowerCase().contains("amazon") || content.toLowerCase().contains("amzn")) {
+                return ClipDataAdvanced.Type.AMAZON;
+            }
+            if (content.toLowerCase().contains("google") && content.toLowerCase().contains("play")) {
+                return ClipDataAdvanced.Type.GOOGLE_PLAY;
+            }
+            if (content.toLowerCase().contains("xing")) {
+                return ClipDataAdvanced.Type.XING;
+            }
+            if (content.toLowerCase().contains("youtube") || content.toLowerCase().contains("youtu")) {
+                return ClipDataAdvanced.Type.YOUTUBE;
+            }
+            if (content.toLowerCase().contains("spotify")) {
+                return ClipDataAdvanced.Type.SPOTIFY;
+            }
             if (content.contains("http")) {
                 return ClipDataAdvanced.Type.URL;
             }
