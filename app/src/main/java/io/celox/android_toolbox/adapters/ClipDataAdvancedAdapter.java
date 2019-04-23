@@ -16,7 +16,6 @@
 
 package io.celox.android_toolbox.adapters;
 
-import android.app.Activity;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -50,12 +50,12 @@ import io.celox.android_toolbox.utils.Database;
 public class ClipDataAdvancedAdapter extends
         RecyclerView.Adapter<ClipDataAdvancedAdapter.ClipDataAdvancedViewHolder> {
 
-    private Activity mActivity;
+    private AppCompatActivity mActivity;
     private List<ClipDataAdvanced> mClips;
 
     private Database mDb;
 
-    public ClipDataAdvancedAdapter(Activity activity, Database database, List<ClipDataAdvanced> clips) {
+    public ClipDataAdvancedAdapter(AppCompatActivity activity, Database database, List<ClipDataAdvanced> clips) {
         mActivity = activity;
         this.mDb = database;
         this.mClips = clips;

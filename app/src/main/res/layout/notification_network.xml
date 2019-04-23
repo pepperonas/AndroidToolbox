@@ -15,6 +15,7 @@
   -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/notification_container"
     android:layout_width="match_parent"
     android:layout_height="64dp"
@@ -27,7 +28,7 @@
         android:layout_marginStart="0dp"
         android:clickable="true"
         android:focusable="true"
-        android:foreground="?android:selectableItemBackground"
+        android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal">
 
         <ImageView
@@ -42,8 +43,8 @@
             android:clickable="true"
             android:contentDescription="@string/empty"
             android:focusable="true"
-            android:foreground="?android:selectableItemBackground"
-            android:src="@drawable/notification_circle_shape" />
+            android:foreground="?attr/selectableItemBackground"
+            app:srcCompat="@drawable/notification_circle_shape" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -156,7 +157,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="4dp"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/ic_launcher" />
+                app:srcCompat="@drawable/ic_launcher" />
 
             <ImageView
                 android:id="@+id/iv_rx"
@@ -165,7 +166,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginBottom="8dp"
                 android:contentDescription="@string/empty"
-                android:src="@drawable/ic_launcher" />
+                app:srcCompat="@drawable/ic_launcher" />
         </LinearLayout>
 
     </LinearLayout>

@@ -33,6 +33,8 @@ import io.celox.android_toolbox.R;
 import io.celox.android_toolbox.utils.Const;
 import io.celox.android_toolbox.utils.Database;
 
+//import androidx.appcompat.app.AppCompatActivity;
+
 /**
  * @author Martin Pfeffer (celox.io)
  * @see <a href="mailto:martin.pfeffer@celox.io">martin.pfeffer@celox.io</a>

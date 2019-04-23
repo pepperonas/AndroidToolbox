@@ -32,7 +32,7 @@
             android:layout_height="24dp"
             android:layout_marginStart="16dp"
             android:contentDescription="@string/empty"
-            android:src="@drawable/ic_launcher" />
+            app:srcCompat="@drawable/ic_launcher" />
 
         <TextView
             android:id="@+id/tv_card_clip_data_text"
