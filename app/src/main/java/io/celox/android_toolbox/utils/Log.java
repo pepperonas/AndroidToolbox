@@ -36,8 +36,6 @@ import io.celox.android_toolbox.R;
  */
 public class Log {
 
-    private static final String TAG = "Log";
-
     private static final int LOG_ID_MAIN = 0;
 
     private static Context sContext;
@@ -226,7 +224,9 @@ public class Log {
     public static void ee(String tag, String msg, String msg2) {
         try {
             String ts = Utils.getReadableTimeStamp();
-            File dir = new File(Environment.getExternalStorageDirectory() + File.separator + Const.APP_DIR + File.separator + Const.LOG_DIR);
+            File dir = new File(Environment.getExternalStorageDirectory() +
+                    File.separator + Const.APP_DIR +
+                    File.separator + Const.LOG_DIR);
             dir.mkdirs();
             PrintWriter printWriter = new PrintWriter(new FileWriter(new File(dir, "crash-" + ts + ".log"), true));
             printWriter.print("-------------------------------\r\n");

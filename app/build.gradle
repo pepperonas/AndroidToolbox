@@ -36,6 +36,28 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 
+def version_code = 7
+def version_name = formatVersionCode(version_code)
+
+Properties props = new Properties()
+InputStream is = new FileInputStream("$project.rootDir/build.properties")
+props.load(is)
+is.close()
+
+task printProps {
+    doFirst {
+        println props.getProperty("app.version")
+    }
+}
+
+task copyApkToGoogleDrive {
+    copy {
+        from '/Users/martin/AndroidStudioProjects/AndroidToolbox' +
+                '/app/build/outputs/apk/dev/debug/android-toolbox-0.0.7-dev-debug.apk'
+        into "/Users/martin/Google Drive/public"
+    }
+}
+
 static def getDate() {
     def date = new Date()
     def dayOnly = true
@@ -56,9 +78,6 @@ static def formatVersionCode(int versionCode) {
     return "-1"
 }
 
-def version_code = 7
-def version_name = formatVersionCode(version_code)
-
 android {
     compileSdkVersion 28
     defaultConfig {
@@ -73,13 +92,27 @@ android {
     }
     buildTypes {
         debug {
-            minifyEnabled true
+            minifyEnabled false
             buildConfigField "long", "APP_CREATED", "1500000000000" + "L"
+            versionNameSuffix '-d'
         }
         release {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             buildConfigField "long", "APP_CREATED", System.currentTimeMillis() + "L"
+            versionNameSuffix '-r'
+        }
+    }
+    flavorDimensions 'default'
+    productFlavors {
+        pro {
+            dimension = 'default'
+            version_name += '-pro'
+        }
+        dev {
+            dimension = 'default'
+            applicationId "io.celox.android_toolbox.dev"
+            versionName += '-dev'
         }
     }
 }
@@ -94,7 +127,7 @@ dependencies {
     implementation 'androidx.preference:preference:1.1.0-alpha04'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
     // utils
     implementation 'com.github.pepperonas:andbasx:0.3.0'
     implementation 'com.github.pepperonas:materialdialog:0.3.4'

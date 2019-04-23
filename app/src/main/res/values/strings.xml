@@ -15,7 +15,6 @@
   -->
 
 <resources>
-    <string name="app_name">AndroidToolbox</string>
     <string name="empty" />
     <string name="test_p_50">50%</string>
     <string name="_unit_gigabytes_per_second" translatable="false">GB/s</string>

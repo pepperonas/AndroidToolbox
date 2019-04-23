@@ -52,7 +52,9 @@ public class MainActivity extends AppCompatActivity {
         Intent serviceIntent = new Intent(this, MainService.class);
         startService(serviceIntent);
 
-        ensureRuntimePermissions();
+        if (getResources().getBoolean(R.bool.ensure_runtime_permissions)) {
+            ensureRuntimePermissions();
+        }
 
         if (getResources().getBoolean(R.bool.wipe_database)) {
             new Database(this).wipe();

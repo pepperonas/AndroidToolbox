@@ -15,5 +15,5 @@
   -->
 
 <resources>
-    <bool name="wipe_database">false</bool>
+    <string name="app_name" translatable="false">AndroidToolbox (dev)</string>
 </resources>

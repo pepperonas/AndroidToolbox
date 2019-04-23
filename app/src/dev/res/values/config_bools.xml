@@ -15,5 +15,6 @@
   -->
 
 <resources>
-    <bool name="wipe_database">false</bool>
+    <bool name="disable_log_writer">false</bool>
+    <bool name="ensure_runtime_permissions">true</bool>
 </resources>
