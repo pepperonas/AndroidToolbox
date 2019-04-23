@@ -17,6 +17,18 @@
 <androidx.preference.PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <PreferenceCategory app:title="@string/main">
+
+        <CheckBoxPreference
+            android:key="@string/CBX_AUTOSTART_ENABLED"
+            android:title="@string/start_app_automatically" />
+
+        <CheckBoxPreference
+            android:key="@string/CBX_REMOTE_VIEWS_ENABLED"
+            android:title="@string/use_remote_views" />
+
+    </PreferenceCategory>
+
     <PreferenceCategory app:title="@string/clipboard">
 
         <CheckBoxPreference

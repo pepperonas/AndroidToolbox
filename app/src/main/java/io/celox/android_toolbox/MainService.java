@@ -31,6 +31,7 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -80,6 +81,7 @@ public class MainService extends Service {
             }
         }
     };
+    private RemoteViews mRemoteViews;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -94,6 +96,13 @@ public class MainService extends Service {
         String channelId = getString(R.string.channel_id_network_notification);
         String channelName = getString(R.string.channel_name_network_notification);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, true)) {
+            // notification's layout
+            mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_network);
+            mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, "");
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName,
                     NotificationManager.IMPORTANCE_NONE);
@@ -115,6 +124,7 @@ public class MainService extends Service {
                 .setPriority(NotificationManager.IMPORTANCE_MIN)
                 .setShowWhen(false)
                 .setCategory(Notification.CATEGORY_SERVICE)
+                .setContent(mRemoteViews)
                 .build();
 
         Intent notificationIntent = new Intent(MainService.this, ClipboardDialogActivity.class);
@@ -155,6 +165,7 @@ public class MainService extends Service {
         float fTx;
         String unitRx = getString(R.string._unit_kilobytes_per_second);
         String unitTx = getString(R.string._unit_kilobytes_per_second);
+        String unitTotal = getString(R.string._unit_kilobytes_per_second);
 
         DecimalFormat df = new DecimalFormat("#.##");
 
@@ -182,6 +193,7 @@ public class MainService extends Service {
         int imageResourceId = 0;
         try {
             if (totalTraffic > Si.MEGA) {
+                unitTotal = getString(R.string._unit_megabytes_per_second);
                 float f = totalTraffic / (float) Si.MEGA;
                 String fStr = String.valueOf(f);
                 imageResourceId = resolveDrawableId("mbytes__" +
@@ -224,9 +236,16 @@ public class MainService extends Service {
             maxTx = AesPrefs.getLongRes(R.string.MAX_TX, 0L) / 1024 + " " + getString(R.string._unit_kilobytes_per_second);
         }
 
+        if (mRemoteViews == null) {
+            if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, true)) {
+                mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_network);
+            }
+        }
+
         final int finalImageResourceId = imageResourceId;
         final String finalMaxRx = maxRx;
         final String finalMaxTx = maxTx;
+        final String finalUnitTotal = unitTotal;
         new Handler(Looper.getMainLooper()).postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -235,6 +254,26 @@ public class MainService extends Service {
                     mNotificationBuilder.setContentTitle(down + "  |  " + up);
                     mNotificationBuilder.setContentText("Max: " + finalMaxRx + " | " + finalMaxTx
                             + "\tClips: " + mDb.getClipDataCount());
+
+                    String sTotalTraffic;
+                    if (totalTraffic > Si.MEGA) {
+                        DecimalFormat df = new DecimalFormat("#.#");
+                        sTotalTraffic = df.format(totalTraffic / Si.MEGA);
+                    } else {
+                        sTotalTraffic = String.valueOf((int) totalTraffic / (int) Si.KILO);
+                    }
+
+                    if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, true)) {
+                        mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, sTotalTraffic);
+                        mRemoteViews.setTextViewText(R.id.tv_notification_circle_values_unit, finalUnitTotal);
+                        mRemoteViews.setTextViewText(R.id.tv_m_notification_center_top, down + "  |  " + up);
+                        mRemoteViews.setTextViewText(R.id.tv_s_notification_center_bottom,
+                                "Max: " + finalMaxRx + " | " + finalMaxTx + "\tClips: " + mDb.getClipDataCount());
+                        mNotificationBuilder.setContent(mRemoteViews);
+                    } else {
+                        mNotificationBuilder.setContent(null);
+                    }
+
                     mNotificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
                 } else {
                     String channelId = getString(R.string.channel_id_network_notification);

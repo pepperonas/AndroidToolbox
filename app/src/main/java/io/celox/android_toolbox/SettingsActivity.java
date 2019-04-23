@@ -69,7 +69,19 @@ public class SettingsActivity extends AppCompatActivity {
             Objects.requireNonNull(findPreference(getString(R.string.P_RESET_MAX_VALUES)))
                     .setOnPreferenceClickListener(this);
 
-            CheckBoxPreference cbxP = findPreference(getString(R.string.CBX_CLIPBOARD_ENABLED));
+            CheckBoxPreference cbxP = findPreference(getString(R.string.CBX_AUTOSTART_ENABLED));
+            if (cbxP != null) {
+                cbxP.setChecked(AesPrefs.getBooleanRes(R.string.AUTOSTART_ENABLED, true));
+                cbxP.setOnPreferenceChangeListener(this);
+            }
+
+            cbxP = findPreference(getString(R.string.CBX_REMOTE_VIEWS_ENABLED));
+            if (cbxP != null) {
+                cbxP.setChecked(AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, true));
+                cbxP.setOnPreferenceChangeListener(this);
+            }
+
+            cbxP = findPreference(getString(R.string.CBX_CLIPBOARD_ENABLED));
             if (cbxP != null) {
                 cbxP.setChecked(AesPrefs.getBooleanRes(R.string.CLIPBOARD_ENABLED, true));
                 cbxP.setOnPreferenceChangeListener(this);
@@ -83,11 +95,19 @@ public class SettingsActivity extends AppCompatActivity {
 
             Preference p = findPreference(getString(R.string.P_BUILD_VERSION));
             String buildVersion = Utils.getBuildVersion();
-            p.setSummary(buildVersion);
+            Objects.requireNonNull(p).setSummary(buildVersion);
         }
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object newValue) {
+            if (preference.getKey().equals(getString(R.string.CBX_AUTOSTART_ENABLED))) {
+                AesPrefs.putBooleanRes(R.string.AUTOSTART_ENABLED, (Boolean) newValue);
+                return true;
+            }
+            if (preference.getKey().equals(getString(R.string.CBX_REMOTE_VIEWS_ENABLED))) {
+                AesPrefs.putBooleanRes(R.string.REMOTE_VIEWS_ENABLED, (Boolean) newValue);
+                return true;
+            }
             if (preference.getKey().equals(getString(R.string.CBX_CLIPBOARD_ENABLED))) {
                 AesPrefs.putBooleanRes(R.string.CLIPBOARD_ENABLED, (Boolean) newValue);
                 return true;

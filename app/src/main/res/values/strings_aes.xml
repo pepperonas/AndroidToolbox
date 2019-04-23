@@ -16,6 +16,7 @@
 
 <resources>
     <string name="AUTOSTART_ENABLED">AUTOSTART_ENABLED</string>
+    <string name="REMOTE_VIEWS_ENABLED">REMOTE_VIEWS_ENABLED</string>
     <string name="CLIPBOARD_ENABLED">CLIPBOARD_ENABLED</string>
     <string name="ENCRYPTION_PASSWORD">ENCRYPTION_PASSWORD</string>
     <string name="LAST_PROGRESS_LOCK_TIME">LAST_PROGRESS_LOCK_TIME</string>
