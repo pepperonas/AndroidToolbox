@@ -50,12 +50,10 @@ task printProps {
 def version_code = 8
 def version_name = formatVersionCode(version_code)
 
-task copyApkToGoogleDrive {
-    copy {
-        from '/Users/martin/AndroidStudioProjects/AndroidToolbox' +
-                '/app/build/outputs/apk/dev/debug/android-toolbox-0.0.8-dev-debug.apk'
-        into "/Users/martin/Google Drive/public"
-    }
+task copyApk(type: Copy) {
+    from '/Users/martin/AndroidStudioProjects/AndroidToolbox/app/build/outputs/apk/dev/debug'
+    into '/Users/martin/Google Drive/public'
+    exclude '*.json'
 }
 
 static def getDate() {
