@@ -81,7 +81,7 @@ public class Database extends SQLiteOpenHelper {
                 TBL_CB_TYPE + " INTEGER DEFAULT NULL, " +
                 TBL_CB_CONTENT + " TEXT UNIQUE NOT NULL ON CONFLICT REPLACE, " +
                 TBL_CB_IV + " INTEGER DEFAULT NULL, " +
-                CREATED + " TIMESTAMP DEFAULT CURRENT_TIMESTAMP " +
+                CREATED + " TIMESTAMP UNIQUE DEFAULT CURRENT_TIMESTAMP " +
                 ");");
     }
 
