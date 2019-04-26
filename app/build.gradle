@@ -50,8 +50,14 @@ task printProps {
 def version_code = 9
 def version_name = formatVersionCode(version_code)
 
-task copyApk(type: Copy) {
+task copyApkDev(type: Copy) {
     from '/Users/martin/AndroidStudioProjects/AndroidToolbox/app/build/outputs/apk/dev/debug'
+    into '/Users/martin/Google Drive/public'
+    exclude '*.json'
+}
+
+task copyApkPro(type: Copy) {
+    from '/Users/martin/AndroidStudioProjects/AndroidToolbox/app/build/outputs/apk/pro/debug'
     into '/Users/martin/Google Drive/public'
     exclude '*.json'
 }
