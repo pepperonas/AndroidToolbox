@@ -113,7 +113,7 @@ public class SettingsActivity extends AppCompatActivity {
                 @Override
                 public boolean onPreferenceClick(Preference preference) {
                     processHitOnBuild();
-                    return true;
+                    return false;
                 }
             });
         }
