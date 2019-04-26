@@ -23,4 +23,6 @@
     <string name="MAX_RX">MAX_RX</string>
     <string name="MAX_TX">MAX_TX</string>
     <string name="PERMISSIONS_GRANTED">PERMISSIONS_GRANTED</string>
+    <string name="NOTIFICATION_IMPORTANCE">NOTIFICATION_IMPORTANCE</string>
+    <string name="MADE_WITH_LOVE">MADE_WITH_LOVE</string>
 </resources>

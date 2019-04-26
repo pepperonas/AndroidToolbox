@@ -69,7 +69,7 @@ public class MainService extends Service {
 
     private Database mDb;
 
-    private Handler mHandler = new Handler();
+    private RemoteViews mRemoteViews;
 
     private Runnable mRunnable = new Runnable() {
         @Override
@@ -81,7 +81,8 @@ public class MainService extends Service {
             }
         }
     };
-    private RemoteViews mRemoteViews;
+
+    private Handler mHandler = new Handler();
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -97,15 +98,15 @@ public class MainService extends Service {
         String channelName = getString(R.string.channel_name_network_notification);
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
-        if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false)) {
-            // notification's layout
-            mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_network);
-            mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, "");
-        }
+        //        if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false)) {
+        //            // notification's layout
+        //            mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_network);
+        //            mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, "");
+        //        }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName,
-                    NotificationManager.IMPORTANCE_NONE);
+                    AesPrefs.getIntRes(R.string.NOTIFICATION_IMPORTANCE, 3));
             notificationChannel.setLightColor(Color.BLUE);
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
             mNotificationManager.createNotificationChannel(notificationChannel);
@@ -121,7 +122,7 @@ public class MainService extends Service {
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.kbytes_0)
                 .setContentTitle(getString(R.string.network_notification_content_title))
-                .setPriority(NotificationManager.IMPORTANCE_MIN)
+                .setPriority(AesPrefs.getIntRes(R.string.NOTIFICATION_IMPORTANCE, 3))
                 .setShowWhen(false)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .setContent(mRemoteViews)
@@ -254,27 +255,32 @@ public class MainService extends Service {
                 if (mNotificationBuilder != null) {
                     mNotificationBuilder.setSmallIcon(finalImageResourceId);
                     mNotificationBuilder.setContentTitle(down + "  |  " + up);
-                    mNotificationBuilder.setContentText("Max: " + finalMaxRx + " | " + finalMaxTx
-                            + "\tClips: " + mDb.getClipDataCount());
 
-                    String sTotalTraffic;
-                    if (totalTraffic > Si.MEGA) {
-                        DecimalFormat df = new DecimalFormat("#.#");
-                        sTotalTraffic = df.format(totalTraffic / Si.MEGA);
-                    } else {
-                        sTotalTraffic = String.valueOf((int) totalTraffic / (int) Si.KILO);
+                    String content = "Max: " + finalMaxRx + " | " + finalMaxTx
+                            + "\tClips: " + mDb.getClipDataCount();
+                    if (AesPrefs.getBooleanRes(R.string.MADE_WITH_LOVE, false)) {
+                        content = getString(R.string.made_with_love_for) + " " + getString(R.string.michi);
                     }
 
-                    if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false)) {
-                        mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, sTotalTraffic);
-                        mRemoteViews.setTextViewText(R.id.tv_notification_circle_values_unit, finalUnitTotal);
-                        mRemoteViews.setTextViewText(R.id.tv_m_notification_center_top, down + "  |  " + up);
-                        mRemoteViews.setTextViewText(R.id.tv_s_notification_center_bottom,
-                                "Max: " + finalMaxRx + " | " + finalMaxTx + "\tClips: " + mDb.getClipDataCount());
-                        mNotificationBuilder.setContent(mRemoteViews);
-                    } else {
-                        mNotificationBuilder.setContent(null);
-                    }
+                    mNotificationBuilder.setContentText(content);
+
+                    //                    if (AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false)) {
+                    //                        String sTotalTraffic;
+                    //                        if (totalTraffic > Si.MEGA) {
+                    //                            DecimalFormat df = new DecimalFormat("#.#");
+                    //                            sTotalTraffic = df.format(totalTraffic / Si.MEGA);
+                    //                        } else {
+                    //                            sTotalTraffic = String.valueOf((int) totalTraffic / (int) Si.KILO);
+                    //                        }
+                    //                        mRemoteViews.setTextViewText(R.id.tv_notification_circle_value, sTotalTraffic);
+                    //                        mRemoteViews.setTextViewText(R.id.tv_notification_circle_values_unit, finalUnitTotal);
+                    //                        mRemoteViews.setTextViewText(R.id.tv_m_notification_center_top, down + "  |  " + up);
+                    //                        mRemoteViews.setTextViewText(R.id.tv_s_notification_center_bottom,
+                    //                                "Max: " + finalMaxRx + " | " + finalMaxTx + "\tClips: " + mDb.getClipDataCount());
+                    //                        mNotificationBuilder.setContent(mRemoteViews);
+                    //                    } else {
+                    //                        mNotificationBuilder.setContent(null);
+                    //                    }
 
                     mNotificationManager.notify(NOTIFICATION_ID, mNotificationBuilder.build());
                 } else {

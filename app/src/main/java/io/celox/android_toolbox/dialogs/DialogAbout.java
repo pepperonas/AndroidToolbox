@@ -19,19 +19,18 @@ package io.celox.android_toolbox.dialogs;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.widget.TextView;
 
-import com.mikepenz.community_material_typeface_library.CommunityMaterial;
-import com.mikepenz.iconics.IconicsDrawable;
+import androidx.core.text.HtmlCompat;
+
+import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.materialdialog.MaterialDialog;
 
 import io.celox.android_toolbox.R;
-import io.celox.android_toolbox.utils.Const;
 
 /**
  * @author Martin Pfeffer (celox.io)
@@ -42,20 +41,24 @@ public class DialogAbout {
     private long mDelta = 0;
 
     public DialogAbout(final Context context) {
+
+        String title = context.getString(R.string.app_name);
+        if (AesPrefs.getBooleanRes(R.string.MADE_WITH_LOVE, false)) {
+            title = context.getString(R.string.michi) + " " + context.getString(R.string.loved_edition);
+        }
+
         new MaterialDialog.Builder(context)
-                .title(context.getString(R.string.app_name))
+                .title(title)
                 .customView(R.layout.dialog_app_info)
                 .positiveText(context.getString(R.string.ok))
                 .positiveColor(R.color.grey_700)
-                .icon(new IconicsDrawable(context, CommunityMaterial.Icon.cmd_lead_pencil)
-                        .colorRes(R.color.dialog_icon)
-                        .sizeDp(Const.NAV_DRAWER_ICON_SIZE))
                 .showListener(new MaterialDialog.ShowListener() {
                     @Override
                     public void onShow(AlertDialog dialog) {
                         super.onShow(dialog);
                         TextView tvLibInfo = dialog.findViewById(R.id.tv_lib_info);
-                        tvLibInfo.setText(Html.fromHtml(context.getString(R.string.web_presentation_info)));
+                        tvLibInfo.setText(HtmlCompat.fromHtml(context.getString(R.string.web_presentation_info),
+                                HtmlCompat.FROM_HTML_MODE_LEGACY));
                         tvLibInfo.setMovementMethod(LinkMovementMethod.getInstance());
                         dialog.getButton(DialogInterface.BUTTON_POSITIVE)
                                 .setOnTouchListener(new OnTouchListener() {

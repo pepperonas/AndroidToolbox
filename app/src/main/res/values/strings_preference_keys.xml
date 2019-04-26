@@ -15,8 +15,10 @@
   -->
 
 <resources>
+    <string name="P_CAT_MAIN">p_cat_main</string>
     <string name="CBX_AUTOSTART_ENABLED">cbx_autostart_enabled</string>
     <string name="CBX_REMOTE_VIEWS_ENABLED">cbx_remote_views_enabled</string>
+    <string name="LIST_NOTIFICATION_IMPORTANCE">list_notification_importance</string>
     <string name="CBX_CLIPBOARD_ENABLED">cbx_clipboard_enabled</string>
     <string name="CBX_ENCRYPT_CLIPBOARD">cbx_encrypt_clipboard</string>
     <string name="P_RESET_MAX_VALUES">p_reset_max_values</string>

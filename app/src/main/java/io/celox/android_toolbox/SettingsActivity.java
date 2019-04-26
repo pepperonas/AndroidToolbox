@@ -22,9 +22,11 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.CheckBoxPreference;
 import androidx.preference.Preference;
+import androidx.preference.PreferenceCategory;
 import androidx.preference.PreferenceFragmentCompat;
 
 import com.pepperonas.aespreferences.AesPrefs;
+import com.pepperonas.andbasx.base.ToastUtils;
 
 import java.util.Objects;
 
@@ -62,9 +64,17 @@ public class SettingsActivity extends AppCompatActivity {
 
     public static class SettingsFragment extends PreferenceFragmentCompat implements
             Preference.OnPreferenceClickListener, Preference.OnPreferenceChangeListener {
+
+        private static final String TAG = "SettingsFragment";
+
+        private long mLastClickedBuild;
+        private int mHiddenCounter;
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+
+            PreferenceCategory preferenceCategory = findPreference(getString(R.string.P_CAT_MAIN));
 
             Objects.requireNonNull(findPreference(getString(R.string.P_RESET_MAX_VALUES)))
                     .setOnPreferenceClickListener(this);
@@ -77,6 +87,9 @@ public class SettingsActivity extends AppCompatActivity {
 
             cbxP = findPreference(getString(R.string.CBX_REMOTE_VIEWS_ENABLED));
             if (cbxP != null) {
+                if (preferenceCategory != null) {
+                    preferenceCategory.removePreference(cbxP);
+                }
                 cbxP.setChecked(AesPrefs.getBooleanRes(R.string.REMOTE_VIEWS_ENABLED, false));
                 cbxP.setOnPreferenceChangeListener(this);
             }
@@ -96,6 +109,13 @@ public class SettingsActivity extends AppCompatActivity {
             Preference p = findPreference(getString(R.string.P_BUILD_VERSION));
             String buildVersion = Utils.getBuildVersion();
             Objects.requireNonNull(p).setSummary(buildVersion);
+            p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    processHitOnBuild();
+                    return true;
+                }
+            });
         }
 
         @Override
@@ -112,6 +132,10 @@ public class SettingsActivity extends AppCompatActivity {
                 AesPrefs.putBooleanRes(R.string.CLIPBOARD_ENABLED, (Boolean) newValue);
                 return true;
             }
+            if (preference.getKey().equals(getString(R.string.LIST_NOTIFICATION_IMPORTANCE))) {
+                AesPrefs.putIntRes(R.string.NOTIFICATION_IMPORTANCE, (Integer) newValue);
+            }
+
             return false;
         }
 
@@ -141,6 +165,27 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
         }
+
+        private void processHitOnBuild() {
+            if ((mLastClickedBuild + 1000) > System.currentTimeMillis() || mLastClickedBuild == 0) {
+                mHiddenCounter++;
+            } else {
+                mHiddenCounter = 0;
+            }
+            if (mHiddenCounter == 7) {
+                // toggle
+                AesPrefs.putBooleanRes(R.string.MADE_WITH_LOVE,
+                        !AesPrefs.getBooleanRes(R.string.MADE_WITH_LOVE, false));
+                if (AesPrefs.getBooleanRes(R.string.MADE_WITH_LOVE, false)) {
+                    ToastUtils.toastLong(R.string.made_with_love);
+                } else {
+                    ToastUtils.toastLong(R.string.reset_made_with_love);
+                }
+            }
+            mHiddenCounter = mHiddenCounter > 7 ? 0 : mHiddenCounter;
+            mLastClickedBuild = System.currentTimeMillis();
+        }
+
     }
 
 }
