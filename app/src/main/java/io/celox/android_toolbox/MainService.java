@@ -106,7 +106,7 @@ public class MainService extends Service {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName,
-                    AesPrefs.getIntRes(R.string.NOTIFICATION_IMPORTANCE, 3));
+                    NotificationManager.IMPORTANCE_NONE);
             notificationChannel.setLightColor(Color.BLUE);
             notificationChannel.setLockscreenVisibility(Notification.VISIBILITY_PRIVATE);
             mNotificationManager.createNotificationChannel(notificationChannel);
@@ -122,7 +122,7 @@ public class MainService extends Service {
                 .setOngoing(true)
                 .setSmallIcon(R.drawable.kbytes_0)
                 .setContentTitle(getString(R.string.network_notification_content_title))
-                .setPriority(AesPrefs.getIntRes(R.string.NOTIFICATION_IMPORTANCE, 3))
+                .setPriority(NotificationManager.IMPORTANCE_NONE)
                 .setShowWhen(false)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .setContent(mRemoteViews)

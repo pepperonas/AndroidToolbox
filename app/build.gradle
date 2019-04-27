@@ -47,7 +47,7 @@ task printProps {
     }
 }
 
-def version_code = 9
+def version_code = 10
 def version_name = formatVersionCode(version_code)
 
 task copyApkDev(type: Copy) {
