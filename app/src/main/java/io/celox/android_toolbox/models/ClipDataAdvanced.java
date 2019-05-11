@@ -127,7 +127,7 @@ public class ClipDataAdvanced {
         String tmpText = content;
 
         if (tmpText.contains("\n")) {
-            tmpText = tmpText.replace("\n", " ⏎ ");
+            tmpText = tmpText.replace("\n", "  ");
         }
 
         if (tmpText.length() > 20) {
