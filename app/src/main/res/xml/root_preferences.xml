@@ -29,13 +29,13 @@
             android:key="@string/CBX_REMOTE_VIEWS_ENABLED"
             android:title="@string/use_remote_views" />
 
-        <ListPreference
-            app:defaultValue="3"
-            app:entries="@array/notification_importance_entries"
-            app:entryValues="@array/notification_importance_values"
-            app:key="@string/LIST_NOTIFICATION_IMPORTANCE"
-            app:title="@string/notification_importance"
-            app:useSimpleSummaryProvider="true" />
+        <!--<ListPreference-->
+        <!--app:defaultValue="3"-->
+        <!--app:entries="@array/notification_importance_entries"-->
+        <!--app:entryValues="@array/notification_importance_values"-->
+        <!--app:key="@string/LIST_NOTIFICATION_IMPORTANCE"-->
+        <!--app:title="@string/notification_importance"-->
+        <!--app:useSimpleSummaryProvider="true" />-->
 
     </PreferenceCategory>
 
