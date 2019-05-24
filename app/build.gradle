@@ -47,7 +47,7 @@ task printProps {
     }
 }
 
-def version_code = 10
+def version_code = 11
 def version_name = formatVersionCode(version_code)
 
 task copyApkDev(type: Copy) {
@@ -146,4 +146,6 @@ dependencies {
     implementation 'com.jjoe64:graphview:4.2.1'
     // preference fragment
     implementation 'com.github.machinarius:preferencefragment:0.1.1'
+    // AsyncHttpClient
+    implementation 'com.loopj.android:android-async-http:1.4.9'
 }

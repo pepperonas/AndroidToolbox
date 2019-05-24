@@ -31,7 +31,6 @@ import androidx.core.app.ActivityCompat;
 import com.pepperonas.aespreferences.AesPrefs;
 import com.pepperonas.andbasx.base.ToastUtils;
 
-import io.celox.android_toolbox.dialogs.DialogAbout;
 import io.celox.android_toolbox.utils.Database;
 
 public class MainActivity extends AppCompatActivity {
@@ -59,6 +58,24 @@ public class MainActivity extends AppCompatActivity {
         if (getResources().getBoolean(R.bool.wipe_database)) {
             new Database(this).wipe();
         }
+
+        //        AsyncHttpClient client = new AsyncHttpClient();
+        //        RequestParams params = new RequestParams();
+        //        client.post("https://gooooo.xyz/celoncgr/android-toolbox-get-name.php", params,
+        //                new AsyncHttpResponseHandler() {
+        //                    @Override
+        //                    public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+        //                        String response = new String(responseBody, StandardCharsets.UTF_8);
+        //                        Log.d(TAG, "onSuccess: " + response);
+        //                    }
+        //
+        //                    @Override
+        //                    public void onFailure(int statusCode, Header[] headers,
+        //                                          byte[] responseBody, Throwable error) {
+        //                        String response = new String(responseBody, StandardCharsets.UTF_8);
+        //                        Log.d(TAG, "onFailure: " + response);
+        //                    }
+        //                });
     }
 
     @Override
@@ -85,9 +102,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_about:
-                new DialogAbout(this);
-                return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;

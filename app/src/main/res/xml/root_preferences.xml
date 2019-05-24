@@ -61,6 +61,10 @@
     </PreferenceCategory>
 
     <Preference
+        android:key="@string/P_ABOUT"
+        android:title="@string/pref_title_about" />
+
+    <Preference
         android:key="@string/P_BUILD_VERSION"
         android:title="@string/pref_title_build_version" />
 

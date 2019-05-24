@@ -17,6 +17,7 @@
 package io.celox.android_toolbox;
 
 import android.os.Bundle;
+import android.os.Handler;
 
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,7 +31,9 @@ import com.pepperonas.andbasx.base.ToastUtils;
 
 import java.util.Objects;
 
+import io.celox.android_toolbox.dialogs.DialogAbout;
 import io.celox.android_toolbox.dialogs.DialogDecryptDatabase;
+import io.celox.android_toolbox.dialogs.DialogNote;
 import io.celox.android_toolbox.dialogs.DialogSetPassword;
 import io.celox.android_toolbox.utils.Database;
 import io.celox.android_toolbox.utils.Utils;
@@ -67,8 +70,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         private static final String TAG = "SettingsFragment";
 
+        private long mLastClickedAbout;
         private long mLastClickedBuild;
-        private int mHiddenCounter;
+        private int mHiddenCounterAbout;
+        private int mHiddenCounterBuild;
 
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
@@ -106,7 +111,16 @@ public class SettingsActivity extends AppCompatActivity {
                 cbxP.setOnPreferenceClickListener(this);
             }
 
-            Preference p = findPreference(getString(R.string.P_BUILD_VERSION));
+            Preference p = findPreference(getString(R.string.P_ABOUT));
+            Objects.requireNonNull(p).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(Preference preference) {
+                    processHitOnAbout();
+                    return false;
+                }
+            });
+
+            p = findPreference(getString(R.string.P_BUILD_VERSION));
             String buildVersion = Utils.getBuildVersion();
             Objects.requireNonNull(p).setSummary(buildVersion);
             p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
@@ -166,13 +180,35 @@ public class SettingsActivity extends AppCompatActivity {
 
         }
 
+        private void processHitOnAbout() {
+            final Handler handler = new Handler();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (mHiddenCounterAbout < 2) {
+                        new DialogAbout(Objects.requireNonNull(getActivity()));
+                    }
+                }
+            }, 1000);
+            if ((mLastClickedAbout + 1000) > System.currentTimeMillis() || mLastClickedAbout == 0) {
+                mHiddenCounterAbout++;
+            } else {
+                //                mHiddenCounterAbout = 0;
+            }
+            if (mHiddenCounterAbout == 7) {
+                new DialogNote(getActivity());
+            }
+            mHiddenCounterAbout = mHiddenCounterAbout > 7 ? 0 : mHiddenCounterAbout;
+            mLastClickedAbout = System.currentTimeMillis();
+        }
+
         private void processHitOnBuild() {
             if ((mLastClickedBuild + 1000) > System.currentTimeMillis() || mLastClickedBuild == 0) {
-                mHiddenCounter++;
+                mHiddenCounterBuild++;
             } else {
-                mHiddenCounter = 0;
+                mHiddenCounterBuild = 0;
             }
-            if (mHiddenCounter == 7) {
+            if (mHiddenCounterBuild == 7) {
                 // toggle
                 AesPrefs.putBooleanRes(R.string.MADE_WITH_LOVE,
                         !AesPrefs.getBooleanRes(R.string.MADE_WITH_LOVE, false));
@@ -182,7 +218,7 @@ public class SettingsActivity extends AppCompatActivity {
                     ToastUtils.toastLong(R.string.reset_made_with_love);
                 }
             }
-            mHiddenCounter = mHiddenCounter > 7 ? 0 : mHiddenCounter;
+            mHiddenCounterBuild = mHiddenCounterBuild > 7 ? 0 : mHiddenCounterBuild;
             mLastClickedBuild = System.currentTimeMillis();
         }
 

@@ -95,6 +95,7 @@
     <string name="dialog_android_id_title">Unlock request</string>
     <string name="dialog_android_id_msg">Touch the ID and send it to martin.pfeffer@celox.io.</string>
 
+    <string name="pref_title_about" translatable="false">About</string>
     <string name="pref_title_build_version" translatable="false">Build Version</string>
     <string name="pref_title_changelog" translatable="false">Changelog</string>
     <string name="permissions_missing">Permission missing</string>
@@ -107,5 +108,6 @@
     <string name="michi">Michi</string>
     <string name="reset_made_with_love">🤫</string>
     <string name="loved_edition">Edition ❤</string>
+    <string name="enter_name">Enter name</string>
 
 </resources>
